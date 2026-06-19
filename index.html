@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilha GTM — Bornlogic 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sb:260px;--sb-bg:#0f172a;--sb-border:#1e293b;
+  --accent:#6366f1;--accent-light:#e0e7ff;
+  --bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --green:#059669;--green-light:#d1fae5;
+  --yellow:#d97706;--yellow-light:#fef3c7;
+  --red:#dc2626;--red-light:#fee2e2;
+  --blue:#2563eb;--blue-light:#dbeafe;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb);min-height:100vh;background:var(--sb-bg);position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-header{padding:24px 20px 16px;border-bottom:1px solid var(--sb-border)}
+.sb-brand{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px}
+.sb-title{font-size:15px;font-weight:600;color:#f1f5f9;margin-top:4px}
+.sb-sub{font-size:12px;color:#475569;margin-top:2px}
+.sb-progress{margin-top:10px}
+.sb-progress-label{font-size:11px;color:#475569;margin-bottom:4px}
+.progress-bar{height:4px;background:#1e293b;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s}
+.nav-section{padding:12px 10px 4px}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#475569;font-weight:700;padding:0 8px;margin-bottom:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:#94a3b8;font-size:13.5px;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:#1e293b;color:#e2e8f0}
+.nav-item.active{background:#312e81;color:#a5b4fc;font-weight:500}
+.nav-num{width:22px;height:22px;border-radius:6px;background:#1e293b;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#64748b;flex-shrink:0}
+.nav-item.active .nav-num{background:#3730a3;color:#c7d2fe}
+.nav-done .nav-num{background:#064e3b;color:#6ee7b7}
+.nav-badge{margin-left:auto;font-size:10px;padding:2px 7px;border-radius:99px;background:#1e293b;color:#475569;white-space:nowrap}
+.nav-item.active .nav-badge{background:#3730a3;color:#a5b4fc}
+
+/* MAIN */
+.main{margin-left:var(--sb);flex:1;padding:40px 48px;max-width:960px}
+.section{display:none}.section.active{display:block}
+
+/* MODULE HEADER */
+.mod-header{margin-bottom:32px}
+.mod-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:4px 12px;border-radius:99px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.mod-title{font-size:28px;font-weight:700;line-height:1.2}
+.mod-meta{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.meta-pill{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);background:var(--card);padding:6px 12px;border-radius:8px;border:1px solid var(--border)}
+.meta-pill strong{color:var(--text)}
+.badge-todos{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe}
+.badge-ae{background:#fce7f3;color:#9d174d;border-color:#fbcfe8}
+.badge-bdr{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+.badge-time{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.badge-pre{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.card-title{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--text)}
+
+/* FACILITATOR */
+.fac-box{background:#fefce8;border:1px solid #fde68a;border-radius:12px;margin-bottom:20px;overflow:hidden}
+.fac-header{padding:13px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:600;color:#92400e;user-select:none}
+.fac-header:hover{background:#fef9c3}
+.fac-body{padding:0 20px 20px;display:none}
+.fac-body.open{display:block}
+.fac-body p{font-size:14px;color:#78350f;margin-bottom:8px}
+.fac-body blockquote{background:#fff7ed;border-left:3px solid #f59e0b;padding:12px 16px;border-radius:0 8px 8px 0;font-size:14px;color:#78350f;font-style:italic;margin:12px 0}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:12px 0;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#f1f5f9;padding:10px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid #f1f5f9;vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.td-score{font-weight:700;color:var(--accent);text-align:center}
+
+/* CALLOUT */
+.callout{padding:14px 18px;border-radius:10px;font-size:14px;line-height:1.6;margin:16px 0}
+.callout-warn{background:#fffbeb;border-left:3px solid #f59e0b;color:#78350f}
+.callout-info{background:#eff6ff;border-left:3px solid #3b82f6;color:#1e40af}
+.callout-danger{background:#fff1f2;border-left:3px solid #f43f5e;color:#9f1239}
+.callout-success{background:#f0fdf4;border-left:3px solid #22c55e;color:#14532d}
+
+/* EXERCISE */
+.ex-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:24px;margin:20px 0}
+.ex-title{font-size:15px;font-weight:600;color:#065f46;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:10px}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:14px}
+.checklist input[type=checkbox]{margin-top:2px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.checklist label{cursor:pointer;line-height:1.5;color:#166534}
+.checklist input:checked+label{text-decoration:line-through;color:var(--muted)}
+
+/* REFERENCE CARD */
+.ref-card{border:2px dashed var(--accent);border-radius:12px;padding:24px;background:#fafafe;margin:24px 0}
+.ref-card-title{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ref-card pre{font-family:'SF Mono','Consolas',monospace;font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;background:#f1f5f9;padding:16px;border-radius:8px;overflow-x:auto}
+.ref-print-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--accent);border:1px solid var(--accent-light);background:var(--accent-light);padding:5px 12px;border-radius:6px;cursor:pointer;margin-bottom:12px;font-weight:600}
+.ref-print-btn:hover{background:#c7d2fe}
+
+/* CRITERIA */
+.crit-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:20px 24px;margin-top:20px}
+.crit-title{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.crit-box ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.crit-box li{font-size:14px;color:#1e40af;padding-left:22px;position:relative}
+.crit-box li::before{content:'✓';position:absolute;left:0;color:#3b82f6;font-weight:700}
+
+/* HOME */
+.home-hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 100%);border-radius:16px;padding:32px 36px;margin-bottom:32px;color:#fff}
+.home-hero-tag{font-size:11px;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.home-hero-title{font-size:26px;font-weight:700;margin-bottom:8px}
+.home-hero-desc{font-size:15px;color:#c7d2fe;line-height:1.6}
+.home-stats{display:flex;gap:24px;margin-top:20px;flex-wrap:wrap}
+.stat{text-align:center;background:rgba(255,255,255,.08);padding:12px 20px;border-radius:10px}
+.stat-num{font-size:24px;font-weight:700;color:#fff}
+.stat-label{font-size:12px;color:#a5b4fc;margin-top:2px}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:8px}
+.mod-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all .2s}
+.mod-card:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(99,102,241,.15);transform:translateY(-2px)}
+.mod-card-num{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:99px;display:inline-block;margin-bottom:10px}
+.mod-card-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.mod-card-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.mod-card-footer{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:11px;padding:3px 8px;border-radius:6px;background:#f1f5f9;color:var(--muted)}
+.pill-green{background:#d1fae5;color:#065f46}
+.pill-purple{background:#ede9fe;color:#6d28d9}
+
+/* TYPOGRAPHY */
+h2{font-size:19px;font-weight:600;margin:28px 0 14px;color:var(--text)}
+h3{font-size:16px;font-weight:600;margin:20px 0 10px;color:var(--text)}
+h4{font-size:14px;font-weight:600;margin:16px 0 8px;color:var(--text)}
+p{font-size:15px;line-height:1.7;margin-bottom:12px;color:#334155}
+strong{font-weight:600}
+hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.highlight{background:#fef9c3;padding:2px 5px;border-radius:4px}
+
+/* MEDDIC SCORE TABLE */
+.score-0-4 td{background:#fff1f2}
+.score-5-6 td{background:#fffbeb}
+.score-7-9 td{background:#f0fdf4}
+.score-10-12 td{background:#eff6ff}
+
+@media print{
+  .sidebar,.fac-box,.ex-box,.nav-item,.ref-print-btn{display:none!important}
+  .main{margin-left:0;padding:20px}
+  .section{display:block!important}
+  .ref-card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-header">
+    <div class="sb-brand">Bornlogic</div>
+    <div class="sb-title">Trilha GTM 2026</div>
+    <div class="sb-sub">6 módulos · 7h total</div>
+    <div class="sb-progress">
+      <div class="sb-progress-label">Progresso geral</div>
+      <div class="progress-bar"><div class="progress-fill" id="global-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Início</div>
+    <button class="nav-item active" data-section="home" onclick="navigate('home')">
+      <span class="nav-num">⌂</span> Visão Geral
+    </button>
+    <button class="nav-item" data-section="principios" onclick="navigate('principios')">
+      <span class="nav-num">◈</span> Princípios
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Todos os participantes</div>
+    <button class="nav-item" data-section="m1" onclick="navigate('m1')">
+      <span class="nav-num">1</span> JTBD <span class="nav-badge">60 min</span>
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">André + Daniel</div>
+    <button class="nav-item" data-section="m2" onclick="navigate('m2')">
+      <span class="nav-num">2</span> SPIN <span class="nav-badge">60 min</span>
+    </button>
+    <button class="nav-item" data-section="m3" onclick="navigate('m3')">
+      <span class="nav-num">3</span> MEDDIC <span class="nav-badge">90 min</span>
+    </button>
+    <button class="nav-item" data-section="m4" onclick="navigate('m4')">
+      <span class="nav-num">4</span> Hormozi <span class="nav-badge">60 min</span>
+    </button>
+    <button class="nav-item" data-section="m5" onclick="navigate('m5')">
+      <span class="nav-num">5</span> Fechamento <span class="nav-badge">45 min</span>
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">BDRs</div>
+    <button class="nav-item" data-section="m6" onclick="navigate('m6')">
+      <span class="nav-num">6</span> BDR Playbook <span class="nav-badge">60 min</span>
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label" style="color:#b45309">★ Evento Especial</div>
+    <button class="nav-item" data-section="m7" onclick="navigate('m7')" style="background:#1c1407;color:#fde68a">
+      <span class="nav-num" style="background:#92400e;color:#fde68a">★</span> Franquias <span class="nav-badge" style="background:#92400e;color:#fde68a">Evento</span>
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Operação</div>
+    <button class="nav-item" data-section="deal-review" onclick="navigate('deal-review')">
+      <span class="nav-num">◎</span> Deal Review <span class="nav-badge">Semanal</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ===================== PRINCÍPIOS ===================== -->
+<div id="principios" class="section">
+  <div class="mod-header">
+    <div class="mod-tag" style="background:#f3e8ff;color:#7e22ce">Antes de começar</div>
+    <h1 class="mod-title">Princípios do Treinamento</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-todos"><strong>Público:</strong> Todos</span>
+      <span class="meta-pill badge-time"><strong>Momento:</strong> Início de cada sessão</span>
+    </div>
+  </div>
+
+  <p style="font-size:16px;color:#334155;line-height:1.8;margin-bottom:28px">Esses princípios não são regras de comportamento — são acordos que criam as condições para aprender. Revisitá-los no início de cada módulo leva 2 minutos e muda a qualidade de tudo que vem depois.</p>
+
+  <!-- PENSAMENTO LIVRE -->
+  <div style="margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:22px">🧠</span>
+      <h2 style="margin:0;font-size:18px">Princípios de Pensamento Livre</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div class="card" style="margin:0;border-left:4px solid #8b5cf6">
+        <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 1</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Adiar o julgamento</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Nenhuma ideia é ridicularizada ou descartada durante a geração. Avaliação vem depois, nunca durante.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #8b5cf6">
+        <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 2</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Deixar fluir</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Quantidade antes de qualidade. O objetivo é volume de ideias — a triagem vem em outro momento.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #8b5cf6">
+        <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 3</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Construir em cima do outro</div>
+        <p style="font-size:14px;color:#64748b;margin:0"><strong style="color:#7c3aed">"Sim, e…"</strong> em vez de <strong style="color:#9f1239">"Sim, mas…"</strong>. Toda ideia do colega é uma plataforma, não um alvo.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #8b5cf6">
+        <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 4</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Abraçar o inacabado</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Ideias pela metade são bem-vindas. Pensamentos incompletos podem virar grandes soluções com ajuda coletiva.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESENÇA E ESCUTA -->
+  <div style="margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:22px">🤝</span>
+      <h2 style="margin:0;font-size:18px">Princípios de Presença e Escuta</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div class="card" style="margin:0;border-left:4px solid #0891b2">
+        <div style="font-size:11px;font-weight:700;color:#0e7490;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 5</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Um de cada vez, todos no seu tempo</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Sem interrupções. Quem está falando tem o espaço até concluir.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #0891b2">
+        <div style="font-size:11px;font-weight:700;color:#0e7490;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 6</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Escuta ativa, não reativa</div>
+        <p style="font-size:14px;color:#64748b;margin:0">O objetivo ao ouvir é entender, não formular resposta. Silêncio entre falas é bem-vindo.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #0891b2">
+        <div style="font-size:11px;font-weight:700;color:#0e7490;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 7</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Celular no modo invisível</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Presença plena é respeito coletivo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTICIPAÇÃO -->
+  <div style="margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:22px">🎯</span>
+      <h2 style="margin:0;font-size:18px">Princípios de Participação</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div class="card" style="margin:0;border-left:4px solid #059669">
+        <div style="font-size:11px;font-weight:700;color:#047857;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 8</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Não há espectadores</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Todo mundo contribui — com uma ideia, uma pergunta, um exemplo ou um "e se…".</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #059669">
+        <div style="font-size:11px;font-weight:700;color:#047857;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 9</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Voz ao mais quieto primeiro</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Em rodadas estruturadas, quem costuma falar menos tem prioridade. Diversidade de perspectiva é ativo.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #059669">
+        <div style="font-size:11px;font-weight:700;color:#047857;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 10</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Erro como dado, não como falha</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Errar durante o treino é o objetivo. Quem não erra não está testando nada novo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENERGIA E RITMO -->
+  <div style="margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:22px">⚡</span>
+      <h2 style="margin:0;font-size:18px">Princípios de Energia e Ritmo</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div class="card" style="margin:0;border-left:4px solid #d97706">
+        <div style="font-size:11px;font-weight:700;color:#b45309;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 11</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Limite de tempo como aliado</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Restrição gera criatividade. Sprints curtos > longas discussões abertas.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #d97706">
+        <div style="font-size:11px;font-weight:700;color:#b45309;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 12</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Trocar de lugar muda o pensamento</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Literalmente ou metaforicamente — sair da perspectiva habitual é parte do exercício.</p>
+      </div>
+      <div class="card" style="margin:0;border-left:4px solid #d97706">
+        <div style="font-size:11px;font-weight:700;color:#b45309;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 13</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Celebrar o processo, não só o resultado</div>
+        <p style="font-size:14px;color:#64748b;margin:0">Reconhecer boa escuta, boa pergunta, boa tentativa — não só a ideia "vencedora".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGURANÇA PSICOLÓGICA -->
+  <div style="margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:22px">🔒</span>
+      <h2 style="margin:0;font-size:18px">Princípio de Segurança Psicológica</h2>
+    </div>
+    <div class="card" style="border-left:4px solid #dc2626;background:#fff1f2;border-color:#fca5a5">
+      <div style="font-size:11px;font-weight:700;color:#b91c1c;letter-spacing:.5px;margin-bottom:6px">PRINCÍPIO 14</div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:10px;color:#7f1d1d">O que acontece aqui, fica aqui</div>
+      <p style="font-size:15px;color:#991b1b;margin:0;line-height:1.7">Vulnerabilidade no treino não vira munição no dia a dia. Confidencialidade é regra, não pedido.</p>
+    </div>
+  </div>
+
+  <!-- RESUMO PARA PROJETAR -->
+  <div class="ref-card" style="border-color:#8b5cf6">
+    <div class="ref-card-title" style="color:#7c3aed">📋 Para projetar no início de cada sessão</div>
+    <pre style="background:#f5f3ff">🧠 PENSAMENTO LIVRE
+   1. Adiar o julgamento
+   2. Deixar fluir — quantidade antes de qualidade
+   3. "Sim, e..." em vez de "Sim, mas..."
+   4. Abraçar o inacabado
+
+🤝 PRESENÇA E ESCUTA
+   5. Um de cada vez, todos no seu tempo
+   6. Escuta ativa, não reativa
+   7. Celular no modo invisível
+
+🎯 PARTICIPAÇÃO
+   8. Não há espectadores
+   9. Voz ao mais quieto primeiro
+  10. Erro como dado, não como falha
+
+⚡ ENERGIA E RITMO
+  11. Limite de tempo como aliado
+  12. Trocar de lugar muda o pensamento
+  13. Celebrar o processo, não só o resultado
+
+🔒 SEGURANÇA PSICOLÓGICA
+  14. O que acontece aqui, fica aqui</pre>
+  </div>
+</div>
+
+<!-- ===================== HOME ===================== -->
+<div id="home" class="section active">
+  <div class="home-hero">
+    <div class="home-hero-tag">GTM Framework Unificado</div>
+    <div class="home-hero-title">Trilha de Treinamento Bornlogic 2026</div>
+    <div class="home-hero-desc">JTBD → SPIN/SPICED → MEDDIC → Hormozi → Fechamento Invertido.<br>Da prospecção ao fechamento, um framework único para todo o time.</div>
+    <div class="home-stats">
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Módulos</div></div>
+      <div class="stat"><div class="stat-num">7h</div><div class="stat-label">Treinamento</div></div>
+      <div class="stat"><div class="stat-num">3 sem</div><div class="stat-label">Implementação</div></div>
+      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Participantes</div></div>
+    </div>
+  </div>
+
+  <h2>Calendário da trilha</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Semana</th><th>Módulo</th><th>Participantes</th><th>Duração</th></tr>
+      <tr><td><strong>Semana 1</strong></td><td>M1 — JTBD</td><td>Todos juntos</td><td>60 min</td></tr>
+      <tr><td></td><td>M6 — BDR Playbook</td><td>BDRs + Daniel</td><td>60 min</td></tr>
+      <tr><td><strong>Semana 2</strong></td><td>M2 — SPIN</td><td>André + Daniel</td><td>60 min</td></tr>
+      <tr><td></td><td>M3 — MEDDIC</td><td>André + Daniel</td><td>90 min</td></tr>
+      <tr><td><strong>Semana 3</strong></td><td>M4 — Hormozi</td><td>André + Daniel</td><td>60 min</td></tr>
+      <tr><td></td><td>M5 — Fechamento Invertido</td><td>André + Daniel</td><td>45 min</td></tr>
+      <tr><td><strong>Semana 4+</strong></td><td>Deal Review Semanal</td><td>André + Daniel</td><td>45–60 min/sem</td></tr>
+    </table>
+  </div>
+
+  <h2>Módulos</h2>
+  <div class="modules-grid">
+    <div class="mod-card" onclick="navigate('m1')">
+      <div class="mod-card-num">M1</div>
+      <div class="mod-card-title">JTBD — Por que o cliente compra</div>
+      <div class="mod-card-desc">3 modos do cliente, 3 tipos de trabalho, identificação de triggers de prospecção.</div>
+      <div class="mod-card-footer"><span class="pill pill-purple">Todos</span><span class="pill">60 min</span></div>
+    </div>
+    <div class="mod-card" onclick="navigate('m2')">
+      <div class="mod-card-num">M2</div>
+      <div class="mod-card-title">SPIN — Conduzindo a descoberta</div>
+      <div class="mod-card-desc">Situation, Problem, Implication, Need-Payoff. O cliente articula o valor sozinho.</div>
+      <div class="mod-card-footer"><span class="pill" style="background:#fce7f3;color:#9d174d">André + Daniel</span><span class="pill">60 min</span></div>
+    </div>
+    <div class="mod-card" onclick="navigate('m3')">
+      <div class="mod-card-num">M3</div>
+      <div class="mod-card-title">MEDDIC — Qualificando e prevendo</div>
+      <div class="mod-card-desc">7 dimensões, scoring 0–12, gate de forecast. Exercício com deal vivo do pipeline.</div>
+      <div class="mod-card-footer"><span class="pill" style="background:#fce7f3;color:#9d174d">André + Daniel</span><span class="pill">90 min</span></div>
+    </div>
+    <div class="mod-card" onclick="navigate('m4')">
+      <div class="mod-card-num">M4</div>
+      <div class="mod-card-title">Hormozi — Construindo valor</div>
+      <div class="mod-card-desc">Value Stack 6 camadas em ordem obrigatória. Preço sempre por último.</div>
+      <div class="mod-card-footer"><span class="pill" style="background:#fce7f3;color:#9d174d">André + Daniel</span><span class="pill">60 min</span></div>
+    </div>
+    <div class="mod-card" onclick="navigate('m5')">
+      <div class="mod-card-num">M5</div>
+      <div class="mod-card-title">Fechamento Invertido</div>
+      <div class="mod-card-desc">"Faz sentido para vocês antes de eu enviar a proposta?" O cliente pede pra entrar.</div>
+      <div class="mod-card-footer"><span class="pill" style="background:#fce7f3;color:#9d174d">André + Daniel</span><span class="pill">45 min</span></div>
+    </div>
+    <div class="mod-card" onclick="navigate('m6')">
+      <div class="mod-card-num">M6</div>
+      <div class="mod-card-title">BDR Playbook</div>
+      <div class="mod-card-desc">ICP, cadência D+0 a D+10, estrutura de email, critérios SAL, handoff para AE.</div>
+      <div class="mod-card-footer"><span class="pill pill-green">BDRs</span><span class="pill">60 min</span></div>
+    </div>
+    <div class="mod-card" onclick="navigate('m7')" style="border-color:#f59e0b;background:#fffbeb">
+      <div class="mod-card-num" style="background:#fef3c7;color:#92400e">★ Evento</div>
+      <div class="mod-card-title">JTBD Franquias</div>
+      <div class="mod-card-desc">Dois clientes com jobs distintos. Script para "vocês têm cases?". Fluxo de 5 min para o evento.</div>
+      <div class="mod-card-footer"><span class="pill" style="background:#fef3c7;color:#92400e">Todos no evento</span><span class="pill">45 min</span></div>
+    </div>
+  </div>
+
+  <div class="callout callout-info" style="margin-top:24px">
+    <strong>Regra de ouro:</strong> A trilha não termina na Semana 3. O mecanismo de absorção real é o <strong>deal review semanal</strong> — quando Pedro faz as perguntas do MEDDIC toda semana, o framework deixa de ser metodologia e vira comportamento.
+  </div>
+</div>
+
+<!-- ===================== M1 — JTBD ===================== -->
+<div id="m1" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Módulo 1</div>
+    <h1 class="mod-title">JTBD — Por que o cliente compra</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-todos"><strong>Público:</strong> Todos</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 60 min</span>
+      <span class="meta-pill badge-pre"><strong>Pré-requisito:</strong> Nenhum</span>
+    </div>
+  </div>
+
+  <div class="fac-box">
+    <div class="fac-header" onclick="toggleFac(this)">
+      ⚡ Roteiro do Facilitador (Pedro) <span class="toggle-icon">▼</span>
+    </div>
+    <div class="fac-body">
+      <p><strong>Abertura (5 min) — Pergunta para o grupo:</strong></p>
+      <blockquote>"Pensem num cliente que vocês perderam — não por preço, não por produto. Por quê vocês acham que perderam?"</blockquote>
+      <p>Deixar responderem. Quase sempre: "não tinha urgência", "travou no decisor". Revelar: a causa raiz é que não sabíamos qual trabalho eles precisavam fazer — não entendemos por que comprariam <em>agora</em>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 O princípio central</div>
+    <p>As pessoas não compram produtos — elas <strong>contratam soluções para trabalhos</strong> que precisam ser feitos. Quando um vendedor entende o trabalho do cliente, ele nomeia uma dor que o cliente já sente e se posiciona como a solução óbvia — antes de falar de produto.</p>
+  </div>
+
+  <h2>Os 3 modos do cliente</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Modo</th><th>O que significa</th><th>O que você faz</th></tr>
+      <tr><td><strong>Passivo</strong></td><td>Sabe que tem o problema, não está procurando solução. A maioria do mercado está aqui.</td><td>Nomear a dor com precisão. Fazer ele sentir que o problema é real.</td></tr>
+      <tr><td><strong>Ativo</strong></td><td>Está avaliando soluções. Mais fácil de converter, mais competitivo.</td><td>Diferenciar rápido — ele já comparou com 2 concorrentes.</td></tr>
+      <tr><td><strong>Trigger</strong></td><td>Um evento forçou urgência: nova liderança, expansão, crise, meta perdida.</td><td>Conectar o evento à solução imediatamente. A janela é curta.</td></tr>
+    </table>
+  </div>
+
+  <h2>Os 3 tipos de trabalho</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Tipo</th><th>Definição</th><th>Exemplo Bornlogic</th></tr>
+      <tr><td><strong>Funcional</strong></td><td>O que o cliente precisa executar operacionalmente</td><td>"Preciso que as 300 lojas ativem campanhas locais sem depender do time central"</td></tr>
+      <tr><td><strong>Emocional</strong></td><td>Como ele quer se sentir — ou deixar de se sentir</td><td>"Não quero ser responsabilizado quando a campanha nacional não converte localmente"</td></tr>
+      <tr><td><strong>Social</strong></td><td>Como ele quer ser percebido pelos outros</td><td>"Quero ser o CMO que trouxe inovação de distribuição de marketing pra rede"</td></tr>
+    </table>
+  </div>
+
+  <h2>A equação que faz o lead se mexer</h2>
+  <div class="card" style="border-color:#6366f1;background:#fafafe">
+    <div style="text-align:center;padding:16px 0 20px">
+      <div style="font-size:22px;font-weight:800;color:#1e1b4b;letter-spacing:-0.5px;line-height:1.4">
+        (Empurrão + Atração) &gt; (Ansiedade + Inércia)
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-top:8px">Um lead só se move quando as forças de movimento superam as forças de resistência</div>
+    </div>
+    <div class="table-wrap" style="margin:0">
+      <table>
+        <tr><th width="18%">Força</th><th width="30%">O que é</th><th>Exemplo Bornlogic</th></tr>
+        <tr style="background:#fff1f2">
+          <td><strong style="color:#b91c1c">🔴 Empurrão</strong><br><small style="color:var(--muted)">Push</small></td>
+          <td>A dor atual ficou grande demais para ignorar</td>
+          <td>"60% das lojas não executam a campanha — o conselho vai pautar isso"</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td><strong style="color:#15803d">🟢 Atração</strong><br><small style="color:var(--muted)">Pull</small></td>
+          <td>A visão do estado desejado é clara e desejável</td>
+          <td>"Magalu faz isso — 300 lojas no mesmo dia, time central só estratégico"</td>
+        </tr>
+        <tr style="background:#fffbeb">
+          <td><strong style="color:#b45309">🟡 Ansiedade</strong><br><small style="color:var(--muted)">Anxiety</small></td>
+          <td>Medo de que a nova solução não funcione ou seja difícil</td>
+          <td>"E se os franqueados não adotarem? E se a integração for complicada?"</td>
+        </tr>
+        <tr style="background:#f8fafc">
+          <td><strong style="color:#475569">⚪ Inércia</strong><br><small style="color:var(--muted)">Habit</small></td>
+          <td>Conforto com o jeito atual, mesmo imperfeito</td>
+          <td>"A gente já tem um WhatsApp com os gerentes — funciona mais ou menos"</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <h2>O que cada função faz com a equação</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Quem</th><th>O que move</th><th>Como</th></tr>
+      <tr><td><strong>BDR</strong></td><td>↑ Empurrão</td><td>Nomear trigger e dor. Tornar o problema insuportável de ignorar.</td></tr>
+      <tr><td><strong>AE — SPIN</strong></td><td>↑ Empurrão (Implication) + ↑ Atração (Need-Payoff)</td><td>Amplificar o custo da dor e fazer o cliente descrever o estado desejado.</td></tr>
+      <tr><td><strong>AE — Hormozi</strong></td><td>↓ Ansiedade + ↓ Inércia</td><td>Camadas 3 (esforço), 4 (tempo) e 5 (risco) do Value Stack reduzem o lado direito.</td></tr>
+      <tr><td><strong>POC</strong></td><td>↓ Ansiedade ≈ 0</td><td>"Você não precisa acreditar — vai ver em 10 lojas antes de escalar."</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>Lead que não avança quase sempre tem Ansiedade ou Inércia alta demais</strong> — não é falta de interesse. A pergunta certa não é "por que ele não quer comprar?" É "o que está mantendo ele onde está?"
+  </div>
+
+  <h2>Triggers mais comuns no mercado Bornlogic</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Trigger</th><th>Sinal visível</th><th>Abertura da conversa</th></tr>
+      <tr><td><strong>Expansão de rede</strong></td><td>Press release, LinkedIn, notícia</td><td>"Com X novas lojas, o problema de padronizar comunicação local vai escalar..."</td></tr>
+      <tr><td><strong>Novo CMO/CEO</strong></td><td>LinkedIn update</td><td>Novo líder quer resultado em 90 dias. Janela curta.</td></tr>
+      <tr><td><strong>Campanha que não funcionou</strong></td><td>Comentários em redes, notícia</td><td>Dor recente e palpável — nomear diretamente.</td></tr>
+      <tr><td><strong>Concorrente adotou solução similar</strong></td><td>Case publicado, notícia</td><td>FOMO institucional — medo de ficar para trás.</td></tr>
+    </table>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício — 30 min</div>
+    <p style="color:#166534;font-size:14px;margin-bottom:14px">Cada participante escolhe 3 contas do pipeline (ou ICPs que está prospectando) e responde para cada uma:</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m1-c1"><label for="m1-c1">Identificar o modo atual da conta (Passivo / Ativo / Trigger)</label></li>
+      <li><input type="checkbox" id="m1-c2"><label for="m1-c2">Nomear o trigger — qual evento gerou ou poderia gerar receptividade?</label></li>
+      <li><input type="checkbox" id="m1-c3"><label for="m1-c3">Descrever o trabalho funcional em 1 frase (sem mencionar produto)</label></li>
+      <li><input type="checkbox" id="m1-c4"><label for="m1-c4">Descrever o trabalho emocional do decisor individual</label></li>
+      <li><input type="checkbox" id="m1-c5"><label for="m1-c5">Apresentar 1 conta para o grupo (2 min)</label></li>
+    </ul>
+  </div>
+
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Cartão de Referência — JTBD</div>
+    <pre>MODOS DO CLIENTE
+  Passivo  → Nomear a dor
+  Ativo    → Diferenciar rápido
+  Trigger  → Conectar evento à solução
+
+TIPOS DE TRABALHO
+  Funcional → O que precisa executar
+  Emocional → Como quer se sentir
+  Social    → Como quer ser percebido
+
+TRIGGERS BORNLOGIC
+  • Expansão de rede (novas lojas)
+  • Novo CMO/CEO (janela de 90 dias)
+  • Campanha nacional que não converteu
+  • Concorrente adotou solução similar
+  • Outros
+
+PERGUNTA QUE ABRE QUALQUER CONVERSA
+  "O que mudou recentemente que fez
+   esse assunto virar prioridade?"</pre>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Critério de absorção</div>
+    <ul>
+      <li>Classifica o modo de uma conta nova em ≤ 5 min de pesquisa</li>
+      <li>Identifica o trigger sem precisar perguntar diretamente</li>
+      <li>Escreve email de prospecção sem mencionar produto nas primeiras 3 linhas</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== M2 — SPIN ===================== -->
+<div id="m2" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Módulo 2</div>
+    <h1 class="mod-title">SPIN — Conduzindo a descoberta</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-ae"><strong>Público:</strong> André + Daniel</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 60 min</span>
+      <span class="meta-pill badge-pre"><strong>Pré-requisito:</strong> M1 — JTBD</span>
+    </div>
+  </div>
+
+  <div class="fac-box">
+    <div class="fac-header" onclick="toggleFac(this)">
+      ⚡ Roteiro do Facilitador (Pedro) <span class="toggle-icon">▼</span>
+    </div>
+    <div class="fac-body">
+      <p><strong>Abertura (5 min):</strong></p>
+      <blockquote>"Qual foi a última vez que um cliente disse 'cara, foi a melhor reunião que tive esse ano'? O que aconteceu nessa reunião?"</blockquote>
+      <p>Revelar: o cliente falou mais do que o vendedor. O vendedor fez boas perguntas. <strong>A discovery é onde você vende — não a proposta.</strong></p>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>O erro mais comum:</strong> O vendedor faz 2 perguntas de contexto, identifica uma dor e vai para o pitch. O cliente não comprou o problema ainda. SPIN requer paciência — a descoberta é a venda.
+  </div>
+
+  <h2>As 4 categorias de perguntas</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th width="15%">Tipo</th><th width="30%">O que faz</th><th>Exemplos Bornlogic</th></tr>
+      <tr>
+        <td><strong>S</strong><br><small style="color:var(--muted)">Situation</small></td>
+        <td>Mapeia o contexto. <em>Use pouco</em> — o cliente já respondeu isso para 10 vendedores.</td>
+        <td>"Quantas lojas tem a rede?" · "Como é feita a comunicação de campanhas para as lojas hoje?"</td>
+      </tr>
+      <tr>
+        <td><strong>P</strong><br><small style="color:var(--muted)">Problem</small></td>
+        <td>Nomeia fricções e insatisfações latentes.</td>
+        <td>"O que acontece quando a campanha nacional precisa de adaptação local?" · "Com que frequência campanhas chegam nas lojas tarde ou mal explicadas?"</td>
+      </tr>
+      <tr>
+        <td><strong>I</strong><br><small style="color:var(--muted)">Implication</small></td>
+        <td><strong>Amplifica o custo da dor.</strong> É aqui que urgência é criada. A mais negligenciada e a mais importante.</td>
+        <td>"Quando isso acontece, qual é o impacto na venda da loja naquele período?" · "Isso aparece nos indicadores que a diretoria acompanha?" · "Quando uma campanha não converte localmente, quem fica responsabilizado?"</td>
+      </tr>
+      <tr>
+        <td><strong>N</strong><br><small style="color:var(--muted)">Need-Payoff</small></td>
+        <td>Faz o cliente descrever o valor da solução com as <em>próprias palavras</em>. Só após completar I.</td>
+        <td>"Se as lojas conseguissem ativar campanhas locais no mesmo dia do nacional, o que isso mudaria?" · "Qual seria o valor se o time central parasse de ser gargalo operacional?"</td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Sequência na prática (reunião de 45 min)</h2>
+  <div class="card">
+    <div class="table-wrap" style="margin:0">
+      <table>
+        <tr><th>Tempo</th><th>Fase</th><th>Objetivo</th></tr>
+        <tr><td>0–5 min</td><td>Rapport + agenda</td><td>Alinhar o que será abordado</td></tr>
+        <tr><td>5–15 min</td><td>Situation (≤7 perguntas)</td><td>Entender o contexto mínimo</td></tr>
+        <tr><td>15–25 min</td><td>Problem</td><td>Revelar 3–5 fricções</td></tr>
+        <tr><td>25–35 min</td><td>Implication</td><td>Amplificar 2 das maiores dores</td></tr>
+        <tr><td>35–42 min</td><td>Need-Payoff</td><td>Cliente descreve o ganho sozinho</td></tr>
+        <tr><td>42–45 min</td><td>Checkpoint (M5)</td><td>"Faz sentido antes de eu preparar uma proposta?"</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício — Roleplay (30 min)</div>
+    <p style="color:#166534;font-size:14px;margin-bottom:14px"><strong>Setup:</strong> Pedro faz o papel de CMO de uma rede de farmácias com 200 lojas — moderadamente aberto, cético, sem urgência declarada.</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m2-c1"><label for="m2-c1">Conduzir discovery sem mencionar produto antes de completar fase I</label></li>
+      <li><input type="checkbox" id="m2-c2"><label for="m2-c2">Usar ≤ 7 perguntas de Situation antes de passar para Problem</label></li>
+      <li><input type="checkbox" id="m2-c3"><label for="m2-c3">Fazer o cliente (Pedro) articular pelo menos 1 Implication espontaneamente</label></li>
+      <li><input type="checkbox" id="m2-c4"><label for="m2-c4">Chegar em Need-Payoff — cliente descreve o ganho com as próprias palavras</label></li>
+      <li><input type="checkbox" id="m2-c5"><label for="m2-c5">Fechar com checkpoint: "Faz sentido para vocês antes de eu enviar uma proposta?"</label></li>
+    </ul>
+  </div>
+
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Cartão de Referência — SPIN</div>
+    <pre>S — Situation  → Contexto (use pouco — ≤7 perguntas)
+P — Problem    → Nomear a dor
+I — Implication → Amplificar o custo     ← mais importante
+N — Need-Payoff → Cliente descreve o ganho
+
+SEQUÊNCIA OBRIGATÓRIA: S → P → I → N
+Nunca vá para N antes de completar I
+
+REGRA DE OURO
+  O cliente deve falar 70% do tempo
+  na reunião de discovery
+
+SINAL DE QUE FUNCIONOU
+  O cliente disse o valor da solução
+  com as próprias palavras</pre>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Critério de absorção</div>
+    <ul>
+      <li>Conduz reunião de 30 min sem mencionar produto antes de completar fase I</li>
+      <li>Faz o cliente articular o Need-Payoff sem indução direta</li>
+      <li>Usa ≤ 7 perguntas de Situation antes de passar para Problem</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== M3 — MEDDIC ===================== -->
+<div id="m3" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Módulo 3</div>
+    <h1 class="mod-title">MEDDIC — Qualificando e prevendo</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-ae"><strong>Público:</strong> André + Daniel</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 90 min</span>
+      <span class="meta-pill badge-pre"><strong>Pré-requisito:</strong> M2 — SPIN</span>
+    </div>
+  </div>
+
+  <div class="fac-box">
+    <div class="fac-header" onclick="toggleFac(this)">
+      ⚡ Roteiro do Facilitador (Pedro) <span class="toggle-icon">▼</span>
+    </div>
+    <div class="fac-body">
+      <p><strong>Abertura (5 min):</strong></p>
+      <blockquote>"Pega um deal que você está convicto que vai fechar. Quem assina o contrato? Você já falou com essa pessoa? Quais são os critérios que vão usar para decidir?"</blockquote>
+      <p>Se não souberem responder: "Esse deal não está qualificado. Está no pipeline, mas não no forecast." Revelar: MEDDIC não é burocracia — é a diferença entre "achamos que vai fechar" e "sabemos que vai fechar".</p>
+    </div>
+  </div>
+
+  <h2>As 7 dimensões do MEDDIC</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th width="8%">Letra</th><th width="25%">Dimensão</th><th width="35%">Pergunta central</th><th>Score</th></tr>
+      <tr><td class="td-score">M</td><td><strong>Metrics</strong></td><td>Qual o impacto quantificado que nossa solução gera?</td><td class="td-score">0–2</td></tr>
+      <tr><td class="td-score">E</td><td><strong>Economic Buyer</strong> ⚠️</td><td>Quem assina o contrato? Já falamos com ele?</td><td class="td-score">0–2</td></tr>
+      <tr><td class="td-score">D¹</td><td><strong>Decision Criteria</strong></td><td>Quais são os critérios de avaliação da decisão?</td><td class="td-score">0–2</td></tr>
+      <tr><td class="td-score">D²</td><td><strong>Decision Process</strong></td><td>Qual é o processo de aprovação até o contrato?</td><td class="td-score">0–2</td></tr>
+      <tr><td class="td-score">I</td><td><strong>Identify Pain</strong></td><td>A dor foi articulada e quantificada?</td><td class="td-score">0–1</td></tr>
+      <tr><td class="td-score">C</td><td><strong>Champion</strong> ⚠️</td><td>Quem internamente quer que a gente ganhe?</td><td class="td-score">0–1</td></tr>
+      <tr><td class="td-score">C²</td><td><strong>Competition</strong></td><td>Sabemos com quem concorremos?</td><td class="td-score">0–2</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-danger">
+    <strong>Campos críticos:</strong> Economic Buyer = 0 ou Champion = 0 em S4+ são sinais vermelhos imediatos — o deal sai do forecast independente do score total.
+  </div>
+
+  <h2>Score e Forecast</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Score</th><th>Status</th><th>Ação</th></tr>
+      <tr class="score-0-4"><td><strong>0–4</strong></td><td>Não qualificado</td><td>Continua em S1/S2. Não entra no forecast.</td></tr>
+      <tr class="score-5-6"><td><strong>5–6</strong></td><td>Qualificação em andamento</td><td>S2/S3. Identificar campos críticos em branco.</td></tr>
+      <tr class="score-7-9"><td><strong>7–9</strong></td><td>Qualificado</td><td>Entra no forecast como <strong>Pipeline</strong>.</td></tr>
+      <tr class="score-10-12"><td><strong>10–12</strong></td><td>Altamente qualificado</td><td>Elegível para <strong>Best Case</strong> ou <strong>Commit</strong> (gestor declara).</td></tr>
+    </table>
+  </div>
+
+  <h2>Forecast Category (campo separado do score)</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Categoria</th><th>Significado</th><th>Quando usar</th></tr>
+      <tr><td><strong>Commit</strong></td><td>Gestor assina embaixo — vai fechar no período</td><td>Score ≥10 + convicção total do gestor</td></tr>
+      <tr><td><strong>Best Case</strong></td><td>Alta probabilidade, mas existe risco identificado</td><td>Score ≥8, risco conhecido e gerenciável</td></tr>
+      <tr><td><strong>Pipeline</strong></td><td>No forecast, sem convicção de fechamento no período</td><td>Score ≥7, ainda qualificando</td></tr>
+      <tr><td><strong>Omitido</strong></td><td>Excluir do forecast atual</td><td>Stalled, sem EB, sem urgência</td></tr>
+    </table>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício — Deal Vivo (45 min)</div>
+    <p style="color:#166534;font-size:14px;margin-bottom:14px">Pegar 2 deals reais do pipeline atual (S3 ou S4). Preencher o MEDDIC ao vivo com o grupo. Campos em branco = agenda de próximas calls.</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m3-c1"><label for="m3-c1">Deal 1: preencher todas as 7 dimensões com score</label></li>
+      <li><input type="checkbox" id="m3-c2"><label for="m3-c2">Deal 1: calcular score total e definir Forecast Category</label></li>
+      <li><input type="checkbox" id="m3-c3"><label for="m3-c3">Deal 2: preencher todas as 7 dimensões com score</label></li>
+      <li><input type="checkbox" id="m3-c4"><label for="m3-c4">Deal 2: calcular score total e definir Forecast Category</label></li>
+      <li><input type="checkbox" id="m3-c5"><label for="m3-c5">Para cada campo em branco: definir próxima ação concreta para preenchê-lo</label></li>
+    </ul>
+  </div>
+
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Scoresheet MEDDIC — Bornlogic</div>
+    <pre>Deal: _______________________________
+
+M  Metrics            [ 0 / 1 / 2 ]
+   Impacto quantificado:
+   _________________________________
+
+E  Economic Buyer     [ 0 / 1 / 2 ]  ← crítico
+   Quem assina? Contato feito?
+   _________________________________
+
+D¹ Decision Criteria  [ 0 / 1 / 2 ]
+   Critérios de avaliação:
+   _________________________________
+
+D² Decision Process   [ 0 / 1 / 2 ]
+   Passos até o contrato assinado:
+   _________________________________
+
+I  Identify Pain      [ 0 / 1 ]
+   Dor articulada e quantificada?
+   _________________________________
+
+C  Champion           [ 0 / 1 ]      ← crítico
+   Nome + acesso ao EB?
+   _________________________________
+
+C² Competition        [ 0 / 1 / 2 ]
+   Concorrentes + posicionamento:
+   _________________________________
+
+SCORE TOTAL: ___ / 12
+FORECAST CATEGORY: Commit / Best Case / Pipeline / Omitido</pre>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Critério de absorção</div>
+    <ul>
+      <li>Preenche MEDDIC de um deal novo em ≤ 48h após a primeira reunião</li>
+      <li>Identifica campos críticos em branco e cria ações para preenchê-los</li>
+      <li>Para de colocar deal no forecast baseado em "achismo" — usa o score como critério</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== M4 — HORMOZI ===================== -->
+<div id="m4" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Módulo 4</div>
+    <h1 class="mod-title">Hormozi — Construindo e apresentando valor</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-ae"><strong>Público:</strong> André + Daniel</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 60 min</span>
+      <span class="meta-pill badge-pre"><strong>Pré-requisito:</strong> M3 — MEDDIC</span>
+    </div>
+  </div>
+
+  <div class="fac-box">
+    <div class="fac-header" onclick="toggleFac(this)">
+      ⚡ Roteiro do Facilitador (Pedro) <span class="toggle-icon">▼</span>
+    </div>
+    <div class="fac-body">
+      <p><strong>Abertura (5 min):</strong></p>
+      <blockquote>"Qual foi a última vez que um cliente disse que estava caro? O que vocês fizeram?"</blockquote>
+      <p>Revelar: quando o cliente diz "está caro", o problema raramente é o preço — é que ele não viu valor suficiente <em>antes</em> de ver o número. O que muda com Hormozi não é o preço — é a ordem.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>O princípio central:</strong> O valor percebido é construído antes do preço ser revelado. O mesmo preço apresentado depois das 5 camadas parece justo ou barato. A ordem importa tanto quanto o conteúdo.
+  </div>
+
+  <h2>O Value Stack — 6 camadas em ordem obrigatória</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>Camada</th><th>O que construir</th><th>Exemplo Bornlogic</th></tr>
+      <tr><td class="td-score">1</td><td><strong>Resultado</strong></td><td>Estado final concreto com números. Sem adjetivos.</td><td>"300 lojas ativando a mesma campanha no mesmo dia, 90% de conformidade, sem depender do time central"</td></tr>
+      <tr><td class="td-score">2</td><td><strong>Probabilidade</strong></td><td>Evidências de que o resultado é real. Cases, dados.</td><td>"Fizemos com Magalu, Renner e Carrefour. Posso mostrar o case detalhado."</td></tr>
+      <tr><td class="td-score" style="background:#fffbeb">3</td><td><strong>Redução de Esforço</strong> ⭐</td><td>O que o cliente <em>não</em> vai precisar fazer.</td><td>"As lojas operam com 3 cliques. Time central para de ser operacional."</td></tr>
+      <tr><td class="td-score" style="background:#fffbeb">4</td><td><strong>Redução de Tempo</strong> ⭐</td><td>Quando começa a funcionar. Seja específico.</td><td>"POC em 30 dias com 10 lojas piloto. Primeiros resultados na semana 2."</td></tr>
+      <tr><td class="td-score" style="background:#fffbeb">5</td><td><strong>Redução de Risco</strong> ⭐</td><td>O que protege o cliente se não funcionar.</td><td>"Modelo take rate — só paga quando campanha roda. POC antes de escalar."</td></tr>
+      <tr><td class="td-score">6</td><td><strong>Preço</strong></td><td>Apresentar por último. Nunca antes das 5 camadas.</td><td>"Com base em tudo isso, o investimento é de R$ X."</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>⭐ Camadas 3, 4 e 5 são as mais negligenciadas</strong> — e onde moram a maioria das objeções não verbalizadas. "Parece complicado", "vai demorar demais", "e se não funcionar?" são dúvidas que o cliente carrega em silêncio se você não construir essas camadas.
+  </div>
+
+  <h2>Conexão com MEDDIC</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Camada do Stack</th><th>Fonte no MEDDIC</th></tr>
+      <tr><td><strong>Resultado</strong></td><td>Metrics (M) + Identify Pain (I)</td></tr>
+      <tr><td><strong>Probabilidade</strong></td><td>Competition (C²) — cases que vencem objeções</td></tr>
+      <tr><td><strong>Redução de Esforço</strong></td><td>Decision Criteria (D¹) — o que valorizam na implementação</td></tr>
+      <tr><td><strong>Redução de Tempo</strong></td><td>Decision Process (D²) — timing que faz sentido pro cliente</td></tr>
+      <tr><td><strong>Redução de Risco</strong></td><td>Economic Buyer (E) — o que reduz o risco pessoal dele</td></tr>
+    </table>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício — Montar o Value Stack (25 min)</div>
+    <p style="color:#166534;font-size:14px;margin-bottom:14px">Montar o Value Stack para o ICP principal (rede de farmácias, 200 lojas). Depois apresentar para Pedro que tentará falar "está caro" antes das 5 camadas serem completadas.</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m4-c1"><label for="m4-c1">Camada 1 — Resultado: concreto com números (não adjetivos)</label></li>
+      <li><input type="checkbox" id="m4-c2"><label for="m4-c2">Camada 2 — Probabilidade: case ou dado que prova que é real</label></li>
+      <li><input type="checkbox" id="m4-c3"><label for="m4-c3">Camada 3 — Esforço: o que o cliente NÃO vai precisar fazer</label></li>
+      <li><input type="checkbox" id="m4-c4"><label for="m4-c4">Camada 4 — Tempo: quando aparece o resultado (data específica)</label></li>
+      <li><input type="checkbox" id="m4-c5"><label for="m4-c5">Camada 5 — Risco: o que protege o cliente se não funcionar</label></li>
+      <li><input type="checkbox" id="m4-c6"><label for="m4-c6">Apresentar sem mencionar preço antes de completar as 5 camadas</label></li>
+    </ul>
+  </div>
+
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Cartão de Referência — Hormozi Value Stack</div>
+    <pre>ORDEM OBRIGATÓRIA (nunca inverter):
+
+  1. RESULTADO     → Concreto, com números
+  2. PROBABILIDADE → Cases, dados, prova
+  3. ESFORÇO       → O que eles NÃO fazem    ← mais negligenciado
+  4. TEMPO         → Quando aparece resultado ← mais negligenciado
+  5. RISCO         → E se não funcionar?      ← mais negligenciado
+  6. PREÇO         → Só aqui, nunca antes
+
+SE O CLIENTE DISSE "ESTÁ CARO":
+  Você apresentou o preço cedo demais
+  ou não construiu as camadas 3, 4 e 5.
+
+FÓRMULA DO PREÇO:
+  "Com base em [resultado + prova + esforço
+   + tempo + risco], o investimento é R$ X"</pre>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Critério de absorção</div>
+    <ul>
+      <li>Apresenta Value Stack sem mencionar preço antes de completar as 5 camadas</li>
+      <li>Constrói camadas 3, 4 e 5 com especificidade — não genérico</li>
+      <li>Usa informações do MEDDIC do deal específico para personalizar cada camada</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== M5 — FECHAMENTO INVERTIDO ===================== -->
+<div id="m5" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Módulo 5</div>
+    <h1 class="mod-title">Fechamento Invertido — O cliente pede pra entrar</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-ae"><strong>Público:</strong> André + Daniel</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 45 min</span>
+      <span class="meta-pill badge-pre"><strong>Pré-requisito:</strong> M4 — Hormozi</span>
+    </div>
+  </div>
+
+  <div class="fac-box">
+    <div class="fac-header" onclick="toggleFac(this)">
+      ⚡ Roteiro do Facilitador (Pedro) <span class="toggle-icon">▼</span>
+    </div>
+    <div class="fac-body">
+      <p><strong>Abertura (5 min):</strong></p>
+      <blockquote>"Qual a sensação que vocês têm quando um vendedor tenta fechar com vocês? Quando alguém diz 'então, o que acha de fecharmos hoje?'"</blockquote>
+      <blockquote>"Agora pensem na última vez que vocês pediram algo pro vendedor — 'pode me mandar o contrato?'. Como foi diferente? Esse é o estado que queremos criar."</blockquote>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">A frase central</div>
+    <p style="font-size:20px;font-weight:700;color:var(--accent);text-align:center;padding:16px 0">"Faz sentido para vocês antes de eu enviar a proposta?"</p>
+    <p>Essa pergunta tem 3 efeitos: <strong>(1)</strong> confirma alinhamento — se sim, você atende um pedido, não empurra; <strong>(2)</strong> revela resistência — se hesitar, há qualificação a fazer; <strong>(3)</strong> posiciona o vendedor — você controla o próximo passo condicionado ao interesse deles.</p>
+  </div>
+
+  <h2>Os 3 momentos no ciclo Bornlogic</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Momento</th><th>Estágio</th><th>Frase</th></tr>
+      <tr>
+        <td><strong>1. Fim da Discovery</strong></td>
+        <td>S1 → S2</td>
+        <td>"Com base no que mapeamos hoje, faz sentido eu preparar uma proposta?"</td>
+      </tr>
+      <tr>
+        <td><strong>2. Envio da Proposta</strong></td>
+        <td>S2 → S3</td>
+        <td>"Antes de qualquer análise de detalhe — o modelo geral faz sentido para o que vocês precisam?"</td>
+      </tr>
+      <tr>
+        <td><strong>3. Antes do Jurídico</strong></td>
+        <td>S5 → S6</td>
+        <td>"Tem alguma preocupação comercial que eu deva resolver antes de enviar o contrato pro jurídico?"</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>Quando o cliente hesita:</strong> não tente fechar. Pergunte: <em>"O que ainda precisaria estar resolvido para que fizesse sentido?"</em> A hesitação revela um campo do MEDDIC em branco — EB não engajado, critério desconhecido, timing errado.
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício — Roleplay (25 min)</div>
+    <p style="color:#166534;font-size:14px;margin-bottom:14px">Pedro faz o papel de Diretora de Marketing de rede de farmácias — interessada mas sem urgência declarada. André e Daniel alternam nos 3 momentos.</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m5-c1"><label for="m5-c1">Momento 1: identificar se o "pode mandar" é avanço real ou cortesia</label></li>
+      <li><input type="checkbox" id="m5-c2"><label for="m5-c2">Momento 2: quando Pedro focar num detalhe "caro", voltar para o modelo geral antes de defender detalhe</label></li>
+      <li><input type="checkbox" id="m5-c3"><label for="m5-c3">Momento 3: quando Pedro hesitar, identificar a objeção escondida antes de entrar no jurídico</label></li>
+      <li><input type="checkbox" id="m5-c4"><label for="m5-c4">Em nenhum momento usar "fechar", "assinar" ou "contrato" antes de receber um "sim"</label></li>
+    </ul>
+  </div>
+
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Cartão de Referência — Fechamento Invertido</div>
+    <pre>FRASE CENTRAL
+  "Faz sentido para vocês antes de
+   eu enviar a proposta?"
+
+OS 3 MOMENTOS
+  1. Fim da discovery   → "faz sentido eu preparar?"
+  2. Envio de proposta  → "o modelo geral faz sentido?"
+  3. Antes do jurídico  → "tem algo comercial a resolver
+                           antes?"
+
+SE O CLIENTE HESITAR
+  "O que ainda precisaria estar resolvido
+   para que fizesse sentido?"
+
+SINAL DE QUE FUNCIONOU
+  O cliente disse "pode mandar" ou
+  "como a gente avança?" — não foi empurrado</pre>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Critério de absorção</div>
+    <ul>
+      <li>Não usa "fechar", "assinar" ou "contrato" antes de receber um "sim" do cliente</li>
+      <li>Quando o cliente hesita, pergunta o que falta em vez de tentar fechar</li>
+      <li>Identifica corretamente se um "pode mandar" é avanço real ou cortesia</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== M6 — BDR PLAYBOOK ===================== -->
+<div id="m6" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Módulo 6</div>
+    <h1 class="mod-title">BDR Playbook — Prospecção, cadência e handoff</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-bdr"><strong>Público:</strong> BDRs + Daniel</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 60 min</span>
+      <span class="meta-pill badge-pre"><strong>Pré-requisito:</strong> M1 — JTBD</span>
+    </div>
+  </div>
+
+  <div class="fac-box">
+    <div class="fac-header" onclick="toggleFac(this)">
+      ⚡ Roteiro do Facilitador (Pedro) <span class="toggle-icon">▼</span>
+    </div>
+    <div class="fac-body">
+      <p><strong>Abertura (5 min):</strong></p>
+      <blockquote>"Quando vocês mandam um cold email, o que vocês falam no primeiro parágrafo?"</blockquote>
+      <p>Revelar: se começa com "apresentamos a Bornlogic" ou "somos uma plataforma de...", está errado. O email que funciona começa com o cliente, não com a empresa — e começa com um evento que aconteceu <em>com eles</em>.</p>
+    </div>
+  </div>
+
+  <h2>ICP da Bornlogic</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Critério</th><th>Obrigatório?</th></tr>
+      <tr><td>Rede com ≥ 50 lojas</td><td>✅ Sim</td></tr>
+      <tr><td>Estrutura: marketing centralizado + lojas executam local</td><td>✅ Sim</td></tr>
+      <tr><td>Alguma verba de marketing a nível de loja (co-op, regional)</td><td>✅ Sim</td></tr>
+      <tr><td>Segmento prioritário: farmácias, moda, alimentação, eletro</td><td>⭐ Prioridade</td></tr>
+      <tr><td>Tem franquias (problema de padronização estrutural)</td><td>⭐ Fit adicional</td></tr>
+      <tr><td>Novo CMO nos últimos 12 meses</td><td>⭐ Trigger forte</td></tr>
+    </table>
+  </div>
+
+  <h2>Cadência de prospecção</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Dia</th><th>Ação</th><th>Canal</th><th>Objetivo</th></tr>
+      <tr><td><strong>D+0</strong></td><td>Primeiro contato com trigger específico</td><td>Email</td><td>Gerar curiosidade com relevância</td></tr>
+      <tr><td><strong>D+2</strong></td><td>Seguimento com novo ângulo</td><td>Email</td><td>Novo valor — nunca repetir o D+0</td></tr>
+      <tr><td><strong>D+5</strong></td><td>Contato direto</td><td>LinkedIn / WhatsApp</td><td>Romper silêncio do email</td></tr>
+      <tr><td><strong>D+10</strong></td><td>Frame de saída</td><td>Email</td><td>Fechar loop ou reativar</td></tr>
+      <tr><td><strong>D+10+</strong></td><td>Nurture passivo</td><td>LinkedIn</td><td>Manter visibilidade sem pressão</td></tr>
+    </table>
+  </div>
+
+  <h2>Estrutura do email D+0</h2>
+  <div class="card">
+    <div class="table-wrap" style="margin:0">
+      <table>
+        <tr><th>Parte</th><th>O que escrever</th><th>Exemplo</th></tr>
+        <tr><td><strong>Assunto</strong></td><td>Específico ao trigger — não ao produto</td><td>"[Nome da rede] + 30 novas lojas em 2025" ✅<br>"Plataforma de marketing para sua rede" ❌</td></tr>
+        <tr><td><strong>§ 1 — Trigger</strong></td><td>Sobre eles, não sobre a Bornlogic</td><td>"Vi que vocês anunciaram abertura de X lojas em [região]..."</td></tr>
+        <tr><td><strong>§ 2 — Dor</strong></td><td>Conectar o trigger à dor (1 frase)</td><td>"Lojas novas tendem a executar campanhas de forma inconsistente nos primeiros 6 meses."</td></tr>
+        <tr><td><strong>§ 3 — Prova</strong></td><td>1 case relevante</td><td>"Ajudamos Magalu e Carrefour a resolver isso — lojas passaram a executar no mesmo dia do nacional."</td></tr>
+        <tr><td><strong>CTA</strong></td><td>Pergunta, não pedido de reunião</td><td>"Isso está no radar de vocês para 2026?"</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h2>Critérios de SAL (todos obrigatórios)</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Critério</th><th>Como verificar</th></tr>
+      <tr><td>✅ Conta dentro do ICP</td><td>≥50 lojas, segmento prioritário</td></tr>
+      <tr><td>✅ Contato é decisor ou influenciador</td><td>CMO, VP Marketing, Diretora de Marketing, CEO (em empresas menores)</td></tr>
+      <tr><td>✅ Trigger identificado</td><td>BDR consegue articular "o que fez eles responderem agora"</td></tr>
+      <tr><td>✅ Reunião confirmada por email</td><td>Confirmação escrita — não só verbal</td></tr>
+      <tr><td>✅ Dor resumida em 1 frase</td><td>Com as palavras do próprio cliente</td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-danger">
+    Se qualquer critério faltar, não é SAL — é um lead em qualificação. Não passa para Daniel.
+  </div>
+
+  <h2>Template de Handoff BDR → AE</h2>
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Passagem de Bastão (apresentar em voz alta — 2 min)</div>
+    <pre>CONTA: ___________________________
+CONTATO: _________________________ (cargo)
+DATA DA REUNIÃO: _________________
+
+TRIGGER:
+  O que fez eles responderem agora:
+  _________________________________
+
+DOR IDENTIFICADA:
+  (com as palavras do próprio cliente)
+  _________________________________
+
+CONTEXTO:
+  Nº lojas: _______________________
+  Segmento: ______________________
+  Algo relevante da conversa:
+  _________________________________
+
+CUIDADOS:
+  O que Daniel precisa saber antes de entrar:
+  _________________________________</pre>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício (30 min)</div>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m6-c1"><label for="m6-c1">Cada BDR escolhe 1 conta e classifica o modo (Passivo / Ativo / Trigger)</label></li>
+      <li><input type="checkbox" id="m6-c2"><label for="m6-c2">Escrever email D+0: parágrafo 1 é sobre eles (trigger), sem produto nas primeiras 2 linhas, CTA é pergunta</label></li>
+      <li><input type="checkbox" id="m6-c3"><label for="m6-c3">Email tem menos de 120 palavras</label></li>
+      <li><input type="checkbox" id="m6-c4"><label for="m6-c4">Simular handoff para Daniel: apresentar template em 2 minutos</label></li>
+      <li><input type="checkbox" id="m6-c5"><label for="m6-c5">Daniel faz 3 perguntas que faria antes de entrar na reunião — BDR tem as respostas</label></li>
+    </ul>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Critério de absorção</div>
+    <ul>
+      <li>Identifica trigger de uma conta nova em ≤ 24h de pesquisa</li>
+      <li>Escreve email sem mencionar produto nos primeiros 2 parágrafos</li>
+      <li>Apresenta template de handoff em 2 min com todas as informações</li>
+      <li>Passa apenas leads que atendem todos os 5 critérios de SAL</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== M7 — FRANQUIAS ===================== -->
+<div id="m7" class="section">
+  <div class="mod-header">
+    <div class="mod-tag" style="background:#fef3c7;color:#92400e">★ Evento Especial</div>
+    <h1 class="mod-title">JTBD Franquias — Preparação para o Evento</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-todos"><strong>Público:</strong> Todos que vão ao evento</span>
+      <span class="meta-pill badge-time"><strong>Duração:</strong> 45 min</span>
+      <span class="meta-pill" style="background:#fef3c7;color:#92400e;border-color:#fde68a"><strong>Contexto:</strong> Sem cases de franquias ainda</span>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>Por que esse módulo existe:</strong> Redes de franquias têm dinâmica diferente do varejo centralizado — dois clientes com jobs distintos e interesses às vezes conflitantes. E vamos chegar sem cases publicados no segmento. Esse módulo prepara para os dois desafios.
+  </div>
+
+  <h2>Franquias vs. varejo centralizado — a diferença fundamental</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Quem</th><th>Job funcional</th><th>Job emocional</th></tr>
+      <tr>
+        <td><strong>Franqueador</strong><br><small style="color:var(--muted)">CMO, Marketing</small></td>
+        <td>Fazer todos os franqueados executarem a campanha corretamente sem meu time ser gargalo</td>
+        <td>Não ser responsabilizado quando franqueado reclama que a taxa de marketing não traz retorno</td>
+      </tr>
+      <tr>
+        <td><strong>Franqueado</strong><br><small style="color:var(--muted)">Dono de unidade</small></td>
+        <td>Rodar campanhas profissionais para minha unidade sem contratar um marketeiro</td>
+        <td>Parar de sentir que pago taxa de marketing e não recebo suporte proporcional</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>Identifique primeiro com quem está falando.</strong> A conversa com o franqueador começa pela dor do conselho. A conversa com o franqueado começa pela sensação de abandono pelo time central.
+  </div>
+
+  <h2>Triggers mais comuns — o que identifica uma rede quente</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Trigger</th><th>Sinal visível</th><th>Como abrir</th></tr>
+      <tr><td><strong>Conselho reclamou do marketing</strong></td><td>Comentário no evento, reunião recente</td><td>"Ouvi que marketing local foi pauta no conselho — o que está acontecendo?"</td></tr>
+      <tr><td><strong>Expansão acelerada</strong></td><td>Novas unidades abertas</td><td>"Com X novas unidades, o desafio de trazer os novos para o padrão de marketing deve ser grande..."</td></tr>
+      <tr><td><strong>Baixa taxa de execução</strong></td><td>Franqueador sabe que &lt;60% executa corretamente</td><td>"Quando lançam uma campanha, qual % das unidades executa do jeito certo?"</td></tr>
+      <tr><td><strong>O próprio evento</strong></td><td>Presença aqui = buscando algo</td><td>"O que fez vocês virem nesse evento?"</td></tr>
+    </table>
+  </div>
+
+  <h2>Como responder "vocês têm cases de franquias?"</h2>
+  <div class="card" style="border-color:#fde68a;background:#fffbeb">
+    <div class="card-title" style="color:#92400e">⚠️ Essa pergunta vai aparecer — tenha a resposta decorada</div>
+    <blockquote style="background:#fff7ed;border-left:3px solid #f59e0b;padding:14px 18px;border-radius:0 8px 8px 0;font-size:15px;color:#78350f;font-style:normal;line-height:1.7;margin:0 0 12px">
+      "Cases publicados de franquias ainda não temos. O que temos são resultados relevantes em redes centralizadas — Magalu, Renner, Carrefour — onde o problema é idêntico: marketing central precisa chegar na ponta sem ser gargalo.<br><br>
+      A diferença na franquia é que o problema é o mesmo, mas amplificado pela autonomia do franqueado. É exatamente por isso que queremos uma rede como a sua como nosso primeiro caso de franquias — o POC vai ser desenhado especificamente para o contexto de vocês."
+    </blockquote>
+    <p style="font-size:13px;color:#92400e;margin:0"><strong>Por que funciona:</strong> honesto + usa prova adjacente + transforma a ausência em posicionamento de co-criação + POC elimina o risco.</p>
+  </div>
+
+  <h2>Banco de perguntas SPIN — franquias</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th width="10%">Tipo</th><th>Pergunta</th></tr>
+      <tr><td><strong>S</strong></td><td>"Quantas unidades tem a rede? Quantas são próprias e quantas franqueadas?"</td></tr>
+      <tr><td><strong>S</strong></td><td>"Como é feita hoje a comunicação de campanhas para os franqueados?"</td></tr>
+      <tr><td><strong>P</strong></td><td>"Quando lançam uma campanha nacional, qual % das unidades executa corretamente?"</td></tr>
+      <tr><td><strong>P</strong></td><td>"Qual é o maior atrito entre o time de marketing central e o conselho de franqueados?"</td></tr>
+      <tr><td><strong>I</strong></td><td>"Quando uma unidade não executa, o que isso representa em venda perdida — e no fundo de royalties?"</td></tr>
+      <tr><td><strong>I</strong></td><td>"Quando isso aparece no conselho de franqueados, como fica a relação com os mais ativos?"</td></tr>
+      <tr><td><strong>N</strong></td><td>"Se cada franqueado conseguisse executar campanhas locais com autonomia, o que isso mudaria para vocês?"</td></tr>
+      <tr><td><strong>N</strong></td><td>"Qual seria o valor de mostrar para o conselho que a taxa de marketing gera ROI por unidade?"</td></tr>
+    </table>
+  </div>
+
+  <!-- BDR SCRIPT SECTION -->
+  <div style="background:#1e1b4b;border-radius:16px;padding:24px 28px;margin:24px 0">
+    <div style="font-size:11px;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Para as BDRs — Papel na feira</div>
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Você explora. André vende.</div>
+    <div style="font-size:14px;color:#c7d2fe;line-height:1.7">Vocês vão ao stand <strong style="color:#fff">deles</strong> — não temos stand próprio. Isso muda tudo: a pessoa que você vai abordar está em modo "representando a empresa", não em modo "estou aqui para comprar". Ela recebeu 10 abordagens de vendedores hoje. Você não pode parecer mais um.</div>
+  </div>
+
+  <div class="callout callout-warn" style="margin-bottom:20px">
+    <strong>Antes de chegar em qualquer stand:</strong> pesquise a rede. Saiba o nome, quantas lojas têm, se são franquias ou próprias. Chegar com informação mínima sobre eles é o que separa uma abordagem de curiosidade genuína de uma abordagem de vendedor.
+  </div>
+
+  <h2>Passo 1 — Preparação antes de chegar no stand</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>O que pesquisar</th><th>Onde achar</th><th>Para que serve</th></tr>
+      <tr><td>Nome da rede e segmento</td><td>Site, Instagram, LinkedIn</td><td>Personalizar a abertura — não chegar perguntando o óbvio</td></tr>
+      <tr><td>Quantas lojas têm</td><td>Site "sobre nós", notícia</td><td>Saber se está no ICP (≥50 lojas)</td></tr>
+      <tr><td>Franquia ou loja própria</td><td>Site "seja um franqueado"</td><td>Escolher qual ângulo de dor usar</td></tr>
+      <tr><td>Algum evento recente</td><td>Google Notícias, LinkedIn</td><td>Abrir com trigger real — muito mais impactante</td></tr>
+    </table>
+  </div>
+
+  <h2>Scripts de abertura — palavra por palavra</h2>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:16px">Três situações diferentes. Não improvise no começo — use exatamente essas frases até ganhar confiança.</p>
+
+  <!-- SCRIPT 1 -->
+  <div class="card" style="border-left:4px solid #6366f1;margin-bottom:12px">
+    <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Situação 1 — Stand está tranquilo, você consegue falar com alguém</div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px 16px;font-size:15px;color:#1e293b;line-height:1.8;font-style:italic;margin-bottom:12px">
+      "Oi, tudo bem! Adoro a [nome da rede] — vocês estão expandindo bastante, né?"<br>
+      <small style="color:var(--muted);font-style:normal">→ [deixa responder, eles vão falar com orgulho]</small><br>
+      "Legal! E com esse crescimento, o marketing das lojas — cada unidade resolve o seu ou vem tudo centralizado?"
+    </div>
+    <div class="callout callout-success" style="margin:0;font-size:13px">
+      <strong>Por que funciona:</strong> começa elogiando e mostrando que você conhece a marca. Eles baixam a guarda. A segunda pergunta abre a dor sem parecer pitch.
+    </div>
+  </div>
+
+  <!-- SCRIPT 2 -->
+  <div class="card" style="border-left:4px solid #059669;margin-bottom:12px">
+    <div style="font-size:11px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Situação 2 — Você chegou, pesquisou e tem um trigger real</div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px 16px;font-size:15px;color:#1e293b;line-height:1.8;font-style:italic;margin-bottom:12px">
+      "Oi! Vi que vocês abriram [X] novas unidades esse ano — parabéns, crescimento expressivo."<br>
+      <small style="color:var(--muted);font-style:normal">→ [deixa responder]</small><br>
+      "Com esse ritmo de expansão, o marketing das novas lojas — vocês conseguem trazer rápido para o padrão da rede ou demora um pouco?"
+    </div>
+    <div class="callout callout-success" style="margin:0;font-size:13px">
+      <strong>Por que funciona:</strong> você prova que fez o dever de casa. Isso é raro em feira e gera respeito imediato. A pergunta conecta o crescimento (conquista deles) à dor (problema que o crescimento cria).
+    </div>
+  </div>
+
+  <!-- SCRIPT 3 -->
+  <div class="card" style="border-left:4px solid #d97706;margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;color:#d97706;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Situação 3 — Stand está movimentado, você tem 30 segundos</div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px 16px;font-size:15px;color:#1e293b;line-height:1.8;font-style:italic;margin-bottom:12px">
+      "Oi! Rápido — vocês têm franquias?"<br>
+      <small style="color:var(--muted);font-style:normal">→ [se sim:]</small><br>
+      "O marketing local das lojas é um problema pra vocês ou já está resolvido?"<br>
+      <small style="color:var(--muted);font-style:normal">→ [se for problema:]</small><br>
+      "Posso te mandar uma mensagem ainda hoje com algo relevante pra isso? Qual seu WhatsApp?"
+    </div>
+    <div class="callout callout-success" style="margin:0;font-size:13px">
+      <strong>Por que funciona:</strong> respeita o tempo deles. Pergunta direta sobre a dor. Se disserem "sim é um problema", o contato já está garantido mesmo sem conversa longa.
+    </div>
+  </div>
+
+  <h2>O que fazer quando eles respondem</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>O que eles dizem</th><th>O que você faz</th><th>Fala exata</th></tr>
+      <tr style="background:#f0fdf4">
+        <td>"Cada loja faz do seu jeito"<br><small style="color:var(--muted)">ou "é um caos"</small></td>
+        <td>✅ Dor confirmada — aprofundar</td>
+        <td>"E quando tem uma campanha grande, como vocês garantem que todas as lojas executam?"</td>
+      </tr>
+      <tr style="background:#f0fdf4">
+        <td>"Temos um time central que manda tudo"</td>
+        <td>✅ Possível dor — checar o atrito</td>
+        <td>"Esse time consegue dar conta de todas as lojas? Ou às vezes fica gargalo?"</td>
+      </tr>
+      <tr style="background:#fffbeb">
+        <td>"Funciona bem, não temos problema nisso"</td>
+        <td>⚠️ Modo passivo — não insistir</td>
+        <td>"Que ótimo. E vocês têm como medir a conformidade das campanhas por loja?" <small>(última tentativa)</small></td>
+      </tr>
+      <tr style="background:#fff1f2">
+        <td>"Não trabalhamos com rede de lojas"</td>
+        <td>❌ Fora do ICP — encerrar gentilmente</td>
+        <td>"Ah entendi! Nós focamos em redes de varejo, então não temos muito a agregar aqui. Boa feira!"</td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Quando chamar o André</h2>
+  <div class="card" style="border-color:#f59e0b;background:#fffbeb">
+    <div style="font-size:15px;font-weight:700;color:#92400e;margin-bottom:12px">Chame o André quando a pessoa falar sobre o problema por mais de 1 minuto</div>
+    <div style="background:#fff;border-radius:8px;padding:14px 16px;font-size:15px;font-style:italic;color:#78350f;line-height:1.8;margin-bottom:12px">
+      "Ó, deixa eu te apresentar o André — ele é o nosso CEO e tem um case bem parecido com o que você acabou de descrever."
+    </div>
+    <p style="font-size:13px;color:#92400e;margin:0"><strong>Não explique o produto antes de chamar o André.</strong> Seu papel termina aqui — o André assume a conversa.</p>
+  </div>
+
+  <h2>O que capturar antes de ir embora</h2>
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Ficha de contato — preencher durante ou logo após a conversa</div>
+    <pre>Nome: _______________________________
+Empresa: ____________________________
+Cargo: ______________________________
+Nº de lojas: ________________________
+
+O que eles disseram sobre o problema:
+(com as palavras deles — não interpretar)
+_____________________________________
+
+Próximo passo combinado:
+( ) Reunião agendada — data: _________
+( ) Vou mandar material
+( ) Sem interesse
+
+WhatsApp / Email: ____________________</pre>
+  </div>
+
+  <h2>Fluxo completo de conversa (5 min)</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Momento</th><th>O que fazer</th><th>Exemplo</th></tr>
+      <tr><td><strong>Abertura</strong><br><small>30 seg</small></td><td>Não apresente a Bornlogic. Pergunte sobre eles.</td><td>"Vocês têm rede de lojas? Quantas?"</td></tr>
+      <tr><td><strong>Dor</strong><br><small>1 min</small></td><td>A pergunta que abre tudo.</td><td>"O marketing de cada loja é responsabilidade de quem?"</td></tr>
+      <tr><td><strong>Aprofundar</strong><br><small>1 min</small></td><td>Só escuta. Não resolve. Não explica nada.</td><td>"E quando tem uma campanha grande, como vocês garantem a execução?"</td></tr>
+      <tr><td><strong>Chamar André</strong><br><small>30 seg</small></td><td>Se falou do problema por 1+ min.</td><td>"Deixa eu te apresentar nosso CEO — ele tem um case parecido."</td></tr>
+      <tr><td><strong>Capturar</strong><br><small>1 min</small></td><td>Preencher ficha. Combinar próximo passo.</td><td>"Posso te mandar um material antes de uma reunião de 30 min?"</td></tr>
+    </table>
+  </div>
+
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Follow-up D+1 — Template</div>
+    <pre>Assunto: [Nome da rede] — conversa de ontem no evento
+
+[Nome],
+
+Foi ótimo falar ontem. Você mencionou [trigger ou dor
+que eles disseram] — é exatamente o problema que resolvemos
+em redes como Magalu, Renner e Carrefour.
+
+A diferença no contexto de franquias é [especificidade
+captada na conversa — ex: papel do conselho,
+autonomia dos franqueados].
+
+Posso mandar um material curto antes de uma reunião
+de 30 minutos para explorar isso?
+
+Abraço,
+[Seu nome]</pre>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-title">✏️ Exercício de preparação — 25 min</div>
+    <ul class="checklist">
+      <li><input type="checkbox" id="m7-c1"><label for="m7-c1">Identificar com quem provavelmente vai falar (franqueador ou franqueado) e preparar abertura diferente para cada</label></li>
+      <li><input type="checkbox" id="m7-c2"><label for="m7-c2">Decorar a resposta para "vocês têm cases de franquias?" — dizer em voz alta até sair natural</label></li>
+      <li><input type="checkbox" id="m7-c3"><label for="m7-c3">Roleplay do fluxo de 5 min: Pedro faz papel de CMO de rede de farmácias franqueadas</label></li>
+      <li><input type="checkbox" id="m7-c4"><label for="m7-c4">Escrever o follow-up D+1 com base na conversa do roleplay</label></li>
+      <li><input type="checkbox" id="m7-c5"><label for="m7-c5">Definir meta do evento: quantas reuniões pós-evento queremos sair com data marcada?</label></li>
+    </ul>
+  </div>
+
+  <div class="crit-box">
+    <div class="crit-title">Pronto para o evento quando</div>
+    <ul>
+      <li>Identifica em 30 seg se está falando com franqueador ou franqueado e adapta a abordagem</li>
+      <li>Responde "cases de franquias?" de forma natural — sem hesitação</li>
+      <li>Sai de cada conversa com contato + próxima reunião combinada</li>
+      <li>Não tenta vender no evento — objetivo é abrir conversa, não fechar</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== DEAL REVIEW ===================== -->
+<div id="deal-review" class="section">
+  <div class="mod-header">
+    <div class="mod-tag">Operação Semanal</div>
+    <h1 class="mod-title">Deal Review Semanal</h1>
+    <div class="mod-meta">
+      <span class="meta-pill badge-ae"><strong>Participantes:</strong> Pedro + André + Daniel</span>
+      <span class="meta-pill badge-time"><strong>Frequência:</strong> Semanal, 45–60 min</span>
+    </div>
+  </div>
+
+  <div class="callout callout-success">
+    <strong>Por que o deal review é o mecanismo de enforcement:</strong> O treinamento instala o vocabulário. O deal review instala o comportamento. Em 3–4 semanas de deal review consistente, o framework deixa de ser "metodologia aprendida" e vira "como a gente pensa sobre deals".
+  </div>
+
+  <h2>Estrutura da reunião</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Tempo</th><th>Bloco</th><th>O que fazer</th></tr>
+      <tr><td>5 min</td><td><strong>Atualização de forecast</strong></td><td>Total Commit + Best Case. Pipeline Coverage = pipeline ÷ meta restante. Saudável: 3–4x.</td></tr>
+      <tr><td>15 min</td><td><strong>Deals de Commit</strong></td><td>O que mudou? Próximo passo com data e responsável. Tem risco novo que mudaria a categoria?</td></tr>
+      <tr><td>15 min</td><td><strong>Deals em risco</strong></td><td>Deals além do prazo máximo do estágio, sem atividade há 7+ dias, ou E=0/C=0 em S4+.</td></tr>
+      <tr><td>10 min</td><td><strong>Deals novos</strong></td><td>MEDDIC inicial. Confirmar se é SAL real ou qualificação em andamento.</td></tr>
+      <tr><td>5 min</td><td><strong>Próximos passos</strong></td><td>Cada deal revisado sai com ação, responsável e data.</td></tr>
+    </table>
+  </div>
+
+  <h2>Perguntas-chave do Pedro</h2>
+  <div class="card">
+    <h3>Para qualquer deal em S3+</h3>
+    <ul style="font-size:14px;line-height:1.8;color:#334155;padding-left:20px">
+      <li>"Você já falou com o Economic Buyer? Quem é?"</li>
+      <li>"Quais são os critérios de decisão deles?"</li>
+      <li>"Qual é o processo de decisão — quem precisa aprovar, em que ordem?"</li>
+      <li>"Quem é o Champion? Ele tem acesso ao EB?"</li>
+      <li>"Qual é o score MEDDIC atual?"</li>
+    </ul>
+    <h3 style="margin-top:16px">Para deals declarados como Commit</h3>
+    <ul style="font-size:14px;line-height:1.8;color:#334155;padding-left:20px">
+      <li>"O que te dá convicção de que isso fecha esse mês?"</li>
+      <li>"Qual é o risco que poderia fazer isso não fechar?"</li>
+      <li>"Você confirmou o next step com o cliente? Qual é a data?"</li>
+    </ul>
+    <h3 style="margin-top:16px">Para deals travados (sem atividade há 7+ dias)</h3>
+    <ul style="font-size:14px;line-height:1.8;color:#334155;padding-left:20px">
+      <li>"O que aconteceu desde a última reunião?"</li>
+      <li>"O que faria esse deal avançar essa semana?"</li>
+      <li>"Se não conseguimos avançar em 2 semanas, movemos para Omitido?"</li>
+    </ul>
+  </div>
+
+  <h2>Template de registro por deal</h2>
+  <div class="ref-card">
+    <div class="ref-card-title">📋 Registro do Deal Review</div>
+    <pre>DATA: _______________
+DEAL: _______________
+ESTÁGIO: ____________
+SCORE MEDDIC: ___ / 12
+FORECAST CATEGORY: Commit / Best Case / Pipeline / Omitido
+
+ATUALIZAÇÃO DA SEMANA:
+_________________________________________
+
+RISCO IDENTIFICADO:
+_________________________________________
+
+PRÓXIMO PASSO:
+  Ação: ___________________________
+  Responsável: ____________________
+  Data limite: ____________________</pre>
+  </div>
+
+  <h2>Sinais de saúde do deal review</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>✅ Funcionando</th><th>⚠️ Precisa de ajuste</th></tr>
+      <tr><td>André e Daniel chegam com MEDDIC atualizado</td><td>Reunião vira relatório de status ("aguardando retorno")</td></tr>
+      <tr><td>A pergunta "qual é o score?" tem resposta imediata</td><td>MEDDIC não é preenchido entre uma semana e outra</td></tr>
+      <tr><td>Deals travados vão para Omitido sem resistência</td><td>Todos os deals ficam como Pipeline — ninguém declara Commit</td></tr>
+      <tr><td>Forecast Category revisada com critério real</td><td>A reunião passa de 60 min regularmente</td></tr>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<script>
+function navigate(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const btn = document.querySelector(`[data-section="${id}"]`);
+  if (btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleFac(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+  header.querySelector('.toggle-icon').textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+// Checkbox persistence
+function initCheckboxes() {
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    const key = 'cb_' + cb.id;
+    if (localStorage.getItem(key) === 'true') {
+      cb.checked = true;
+    }
+    cb.addEventListener('change', () => {
+      localStorage.setItem(key, cb.checked);
+      updateProgress();
+    });
+  });
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('input[type="checkbox"]');
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+  const pct = all.length > 0 ? Math.round((checked.length / all.length) * 100) : 0;
+  const fill = document.getElementById('global-progress');
+  if (fill) fill.style.width = pct + '%';
+
+  // Mark nav items as done if all checkboxes in section are checked
+  ['m1','m2','m3','m4','m5','m6'].forEach(id => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const sectionCbs = section.querySelectorAll('input[type="checkbox"]');
+    const sectionChecked = section.querySelectorAll('input[type="checkbox"]:checked');
+    const btn = document.querySelector(`[data-section="${id}"]`);
+    if (btn && sectionCbs.length > 0 && sectionCbs.length === sectionChecked.length) {
+      btn.classList.add('nav-done');
+    } else if (btn) {
+      btn.classList.remove('nav-done');
+    }
+  });
+}
+
+// Module cards on home navigate to section
+document.querySelectorAll('.mod-card').forEach(card => {
+  card.addEventListener('click', function() {
+    const onclick = this.getAttribute('onclick');
+    if (onclick) eval(onclick);
+  });
+});
+
+initCheckboxes();
+updateProgress();
+</script>
+</body>
+</html>
