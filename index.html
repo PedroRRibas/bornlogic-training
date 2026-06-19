@@ -396,18 +396,162 @@ hr{border:none;border-top:1px solid var(--border);margin:28px 0}
     </div>
   </div>
 
-  <h2>Calendário da trilha</h2>
+  <h2>Processo de Vendas — Quem faz o quê</h2>
+
+  <!-- Legenda -->
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+    <span style="background:#d1fae5;color:#065f46;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700">● BDR</span>
+    <span style="background:#fce7f3;color:#9d174d;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700">● AE / André</span>
+    <span style="background:#ede9fe;color:#5b21b6;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700">● Conjunto</span>
+    <span style="background:#fef3c7;color:#92400e;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700">● Pedro (RevOps)</span>
+  </div>
+
+  <!-- Fluxo do processo -->
+  <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:28px">
+
+    <!-- Fase 1 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #bbf7d0">
+      <div style="min-width:100px;background:#d1fae5;color:#065f46;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">BDR<br>SOLO</div>
+      <div style="flex:1;background:#f0fdf4;padding:12px 16px;border-right:1px solid #bbf7d0">
+        <div style="font-weight:700;font-size:14px;color:#065f46">1. Prospecção — S0</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Pesquisa de ICP, identificação de trigger, cadência D+0→D+10</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">Framework: JTBD — classificar modo (Passivo / Ativo / Trigger)</div>
+      </div>
+      <div style="min-width:70px;background:#f0fdf4;padding:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+        <span onclick="navigate('m1')" style="cursor:pointer;background:#d1fae5;color:#065f46;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M1</span>
+        <span onclick="navigate('m6')" style="cursor:pointer;background:#d1fae5;color:#065f46;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M6</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;color:#94a3b8;font-size:18px;line-height:1">↓</div>
+
+    <!-- Fase 2 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #bbf7d0">
+      <div style="min-width:100px;background:#d1fae5;color:#065f46;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">BDR<br>SOLO</div>
+      <div style="flex:1;background:#f0fdf4;padding:12px 16px;border-right:1px solid #bbf7d0">
+        <div style="font-weight:700;font-size:14px;color:#065f46">2. Chamada de Qualificação — 15–20 min</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Verificar 6 critérios de SAL. Preencher briefing no HubSpot.</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">SPIN: BDR usa P (Problem) + I leve (Implication) para surfacear dor</div>
+        <div style="font-size:11px;color:#374151;margin-top:4px">MEDDIC: BDR coleta I inicial + identifica provável E (quem assina)</div>
+      </div>
+      <div style="min-width:70px;background:#f0fdf4;padding:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+        <span onclick="navigate('m6')" style="cursor:pointer;background:#d1fae5;color:#065f46;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M6</span>
+      </div>
+    </div>
+
+    <!-- Handoff -->
+    <div style="text-align:center;color:#94a3b8;font-size:14px;line-height:1;padding:6px 0">↓</div>
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:2px solid #a78bfa;background:#ede9fe">
+      <div style="min-width:100px;background:#7c3aed;color:#fff;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">HANDOFF<br>BDR → AE</div>
+      <div style="flex:1;padding:12px 16px">
+        <div style="font-weight:700;font-size:14px;color:#5b21b6">Reunião de Handoff — 15 min</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">BDR apresenta briefing (5 min) → AE faz perguntas (5 min) → alinhamento estratégico (5 min)</div>
+        <div style="font-size:11px;color:#7c3aed;margin-top:4px;font-weight:600">Output: AE sai com hipótese JTBD + 2–3 perguntas de Implication</div>
+        <div style="font-size:11px;color:#dc2626;margin-top:4px;font-weight:600">⚠ André não entra em reunião sem handoff prévio</div>
+      </div>
+      <div style="min-width:70px;background:#ede9fe;padding:10px;display:flex;align-items:center;justify-content:center">
+        <span onclick="navigate('m6')" style="cursor:pointer;background:#7c3aed;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M6</span>
+      </div>
+    </div>
+    <div style="text-align:center;color:#94a3b8;font-size:14px;line-height:1;padding:6px 0">↓</div>
+
+    <!-- Fase 3 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fbcfe8">
+      <div style="min-width:100px;background:#fce7f3;color:#9d174d;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">AE<br>LIDERA</div>
+      <div style="flex:1;background:#fff7f9;padding:12px 16px;border-right:1px solid #fbcfe8">
+        <div style="font-weight:700;font-size:14px;color:#9d174d">3. Discovery — S1</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Reunião de descoberta com o prospect. BDR pode observar.</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">SPIN completo: S → P → I → N (AE conduz, nunca pular para Need-Payoff sem Implication)</div>
+        <div style="font-size:11px;color:#374151;margin-top:4px">MEDDIC: aprofunda I, coleta M inicial, identifica C e provável E</div>
+      </div>
+      <div style="min-width:70px;background:#fff7f9;padding:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+        <span onclick="navigate('m2')" style="cursor:pointer;background:#fce7f3;color:#9d174d;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M2</span>
+        <span onclick="navigate('m3')" style="cursor:pointer;background:#fce7f3;color:#9d174d;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M3</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;color:#94a3b8;font-size:18px;line-height:1">↓</div>
+
+    <!-- Fase 4 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fbcfe8">
+      <div style="min-width:100px;background:#fce7f3;color:#9d174d;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">AE<br>LIDERA</div>
+      <div style="flex:1;background:#fff7f9;padding:12px 16px;border-right:1px solid #fbcfe8">
+        <div style="font-weight:700;font-size:14px;color:#9d174d">4. Qualificação MEDDIC — S2</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Mapear Economic Buyer, Decision Criteria, Decision Process, construir Champion, mapear Concorrência</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">Gate: MEDDIC ≥ 7 para entrar no forecast como Pipeline</div>
+        <div style="font-size:11px;color:#dc2626;margin-top:4px;font-weight:600">⚠ E=0 ou C=0 em S2+ = deal não entra no forecast</div>
+      </div>
+      <div style="min-width:70px;background:#fff7f9;padding:10px;display:flex;align-items:center;justify-content:center">
+        <span onclick="navigate('m3')" style="cursor:pointer;background:#fce7f3;color:#9d174d;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M3</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;color:#94a3b8;font-size:18px;line-height:1">↓</div>
+
+    <!-- Fase 5 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fbcfe8">
+      <div style="min-width:100px;background:#fce7f3;color:#9d174d;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">AE<br>LIDERA</div>
+      <div style="flex:1;background:#fff7f9;padding:12px 16px;border-right:1px solid #fbcfe8">
+        <div style="font-weight:700;font-size:14px;color:#9d174d">5. Proposta + Value Stack — S3</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Resultado → Probabilidade → Esforço → Tempo → Risco → Preço (ordem obrigatória)</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">Checkpoint 1 — Fechamento Invertido: "Faz sentido para vocês antes de eu enviar a proposta?"</div>
+      </div>
+      <div style="min-width:70px;background:#fff7f9;padding:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+        <span onclick="navigate('m4')" style="cursor:pointer;background:#fce7f3;color:#9d174d;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M4</span>
+        <span onclick="navigate('m5')" style="cursor:pointer;background:#fce7f3;color:#9d174d;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M5</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;color:#94a3b8;font-size:18px;line-height:1">↓</div>
+
+    <!-- Fase 6 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fbcfe8">
+      <div style="min-width:100px;background:#fce7f3;color:#9d174d;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">AE<br>LIDERA</div>
+      <div style="flex:1;background:#fff7f9;padding:12px 16px;border-right:1px solid #fbcfe8">
+        <div style="font-weight:700;font-size:14px;color:#9d174d">6. POC — S3/S4</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Prova de conceito com 10 lojas piloto. Zera a Ansiedade das 4 Forças.</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">Checkpoint 2 — Fechamento Invertido: alinhamento antes de enviar proposta final</div>
+      </div>
+      <div style="min-width:70px;background:#fff7f9;padding:10px;display:flex;align-items:center;justify-content:center">
+        <span onclick="navigate('m5')" style="cursor:pointer;background:#fce7f3;color:#9d174d;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M5</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;color:#94a3b8;font-size:18px;line-height:1">↓</div>
+
+    <!-- Fase 7 -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fde68a">
+      <div style="min-width:100px;background:#fef3c7;color:#92400e;padding:14px 10px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11px;line-height:1.4">AE +<br>PEDRO</div>
+      <div style="flex:1;background:#fffbeb;padding:12px 16px;border-right:1px solid #fde68a">
+        <div style="font-weight:700;font-size:14px;color:#92400e">7. Análise Jurídica — S4</div>
+        <div style="font-size:12px;color:#374151;margin-top:4px">Contrato, compras, jurídico. A área de compras entra fria — nova venda para nova pessoa.</div>
+        <div style="font-size:11px;color:#dc2626;margin-top:4px;font-weight:600">⚠ Risco D²: compras renegocia o que já estava alinhado. MEDDIC D² deve estar completo antes daqui.</div>
+        <div style="font-size:11px;color:#6366f1;margin-top:4px;font-weight:600">Checkpoint 3 — Fechamento Invertido: "O próximo passo seria encaminhar o contrato. Faz sentido?"</div>
+      </div>
+      <div style="min-width:70px;background:#fffbeb;padding:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+        <span onclick="navigate('m3')" style="cursor:pointer;background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M3</span>
+        <span onclick="navigate('m5')" style="cursor:pointer;background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">M5</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MEDDIC por papel -->
+  <h2>MEDDIC — Quem preenche o quê</h2>
   <div class="table-wrap">
     <table>
-      <tr><th>Semana</th><th>Módulo</th><th>Participantes</th><th>Duração</th></tr>
-      <tr><td><strong>Semana 1</strong></td><td>M1 — JTBD</td><td>Todos juntos</td><td>60 min</td></tr>
-      <tr><td></td><td>M6 — BDR Playbook</td><td>BDRs + Daniel</td><td>60 min</td></tr>
-      <tr><td><strong>Semana 2</strong></td><td>M2 — SPIN</td><td>André + Daniel</td><td>60 min</td></tr>
-      <tr><td></td><td>M3 — MEDDIC</td><td>André + Daniel</td><td>90 min</td></tr>
-      <tr><td><strong>Semana 3</strong></td><td>M4 — Hormozi</td><td>André + Daniel</td><td>60 min</td></tr>
-      <tr><td></td><td>M5 — Fechamento Invertido</td><td>André + Daniel</td><td>45 min</td></tr>
-      <tr><td><strong>Semana 4+</strong></td><td>Deal Review Semanal</td><td>André + Daniel</td><td>45–60 min/sem</td></tr>
+      <tr><th>Dimensão</th><th style="background:#f0fdf4;color:#065f46">BDR (na chamada solo)</th><th style="background:#fff7f9;color:#9d174d">AE / André (na discovery e follow-ups)</th></tr>
+      <tr><td><strong>M — Metrics</strong></td><td style="color:#64748b">—</td><td>Coleta via SPIN Need-Payoff. Quantifica o impacto em R$ ou % com o cliente.</td></tr>
+      <tr><td><strong>E — Economic Buyer</strong></td><td>Pergunta "quem assina esse tipo de decisão?" — identifica o cargo, não necessariamente acessa</td><td>Confirma, acessa e tem reunião com o EB. E=0 sem acesso = risco crítico.</td></tr>
+      <tr><td><strong>D¹ — Decision Criteria</strong></td><td style="color:#64748b">—</td><td>Mapeia critérios formais e informais. O que os faria eliminar uma solução?</td></tr>
+      <tr><td><strong>D² — Decision Process</strong></td><td style="color:#64748b">—</td><td>Mapeia passos até o contrato, incluindo papel da área de compras.</td></tr>
+      <tr><td><strong>I — Identify Pain</strong></td><td><strong>BDR: surfaça a dor com P+I do SPIN.</strong> Frase do prospect vai para o briefing.</td><td>Aprofunda e quantifica a dor. Conecta ao impacto em Metrics.</td></tr>
+      <tr><td><strong>C — Champion</strong></td><td>Identifica quem respondeu e nível de influência estimado</td><td>Constrói o Champion. Testa se tem acesso ao EB e influência real.</td></tr>
+      <tr><td><strong>C² — Competition</strong></td><td>Registra se o prospect mencionou outra solução ou status quo</td><td>Mapeia concorrência completa e posicionamento. Influencia Decision Criteria a favor.</td></tr>
     </table>
+  </div>
+  <div class="callout callout-blue" style="background:#eff6ff;border-left:4px solid #3b82f6;padding:0.75rem 1rem;border-radius:0 8px 8px 0;margin-bottom:24px">
+    <strong>SPIN no processo:</strong> BDR usa P + I leve na chamada de qualificação para surfacear dor (output: I no MEDDIC). AE usa o SPIN completo (S→P→I→N) na discovery para quantificar impacto (output: M no MEDDIC) e construir o Value Stack.
   </div>
 
   <h2>Módulos</h2>
@@ -454,6 +598,21 @@ hr{border:none;border-top:1px solid var(--border);margin:28px 0}
       <div class="mod-card-desc">Dois clientes com jobs distintos. Script para "vocês têm cases?". Fluxo de 5 min para o evento.</div>
       <div class="mod-card-footer"><span class="pill" style="background:#fef3c7;color:#92400e">Todos no evento</span><span class="pill">45 min</span></div>
     </div>
+  </div>
+
+  <h2 style="margin-top:28px">Calendário da trilha</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Semana</th><th>Módulo</th><th>Participantes</th><th>Duração</th></tr>
+      <tr><td><strong>Semana 1</strong></td><td>M1 — JTBD</td><td>Todos juntos</td><td>60 min</td></tr>
+      <tr><td></td><td>M6 — BDR Playbook</td><td>BDRs + Daniel</td><td>60 min</td></tr>
+      <tr><td><strong>Semana 2</strong></td><td>M2 — SPIN</td><td>André + Daniel</td><td>60 min</td></tr>
+      <tr><td></td><td>M3 — MEDDIC</td><td>André + Daniel</td><td>90 min</td></tr>
+      <tr><td><strong>Semana 3</strong></td><td>M4 — Hormozi</td><td>André + Daniel</td><td>60 min</td></tr>
+      <tr><td></td><td>M5 — Fechamento Invertido</td><td>André + Daniel</td><td>45 min</td></tr>
+      <tr><td><strong>Pré-evento ABF</strong></td><td>M7 — Franquias</td><td>BDRs + André</td><td>45 min</td></tr>
+      <tr><td><strong>Semana 4+</strong></td><td>Deal Review Semanal</td><td>Pedro + André + Daniel</td><td>45 min/sem</td></tr>
+    </table>
   </div>
 
   <div class="callout callout-info" style="margin-top:24px">
