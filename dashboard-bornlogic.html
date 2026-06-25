@@ -356,26 +356,9 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  CONFIGURAÇÃO
-// ═══════════════════════════════════════════════════════════════
-//
-//  1. SENHA: mude o valor abaixo (ficará visível no código-fonte;
-//     para segurança maior, use um repositório privado no GitHub)
-//
-const SENHA = 'bornlogic2024';
-//
-//  2. URL DOS DADOS: publique a planilha como CSV
-//     Planilha > Arquivo > Compartilhar > Publicar na web
-//     → Selecione a aba → Formato CSV → Publicar
-//     Cole a URL gerada abaixo:
-//
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTd0xQKharcAOkWu6Y7fMOBOLiM2o8Soqmehfa33CP41Fogi3MREW99brunju8e-w9ch75kYizT7phQ/pub?gid=0&single=true&output=csv';
-//
-//  3. Intervalo de atualização automática (segundos)
-//
-const REFRESH_S = 60;
-// ═══════════════════════════════════════════════════════════════
+const SENHA_HASH = '32d79857b9f147b0a7e7c919675b4dab29c5d89d7c4d0fe2f05673b4bcbf7e68';
+const SHEET_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTd0xQKharcAOkWu6Y7fMOBOLiM2o8Soqmehfa33CP41Fogi3MREW99brunju8e-w9ch75kYizT7phQ/pub?gid=0&single=true&output=csv';
+const REFRESH_S  = 60;
 
 let periodo  = 12;
 let charts   = {};
@@ -422,7 +405,7 @@ function fmtPct(v) {
 // ── Autenticação ──────────────────────────────────────────────
 
 async function appInit() {
-  pwdHash = await sha256(SENHA);
+  pwdHash = SENHA_HASH;
   const saved = sessionStorage.getItem('auth');
   if (saved === pwdHash) mostrarApp();
 }
@@ -480,15 +463,24 @@ async function carregarDados() {
 
 function processarDados(rows) {
   if (rows.length < 2) return;
-  const header  = rows[0];
-  const meses   = header.slice(2); // jan./24 … mai./26
+
+  // Encontra a linha do cabeçalho (primeira com 'Item')
+  let headerIdx = 0;
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i].some(c => c.trim() === 'Item')) { headerIdx = i; break; }
+  }
+
+  const header     = rows[headerIdx];
+  const itemCol    = header.findIndex(c => c.trim() === 'Item');
+  const dataStart  = itemCol + 2; // pula Item + Unidade
+  const meses      = header.slice(dataStart);
 
   const data = {};
-  for (let i = 1; i < rows.length; i++) {
+  for (let i = headerIdx + 1; i < rows.length; i++) {
     const row = rows[i];
-    const key = row[0] ? row[0].trim() : '';
+    const key = row[itemCol] ? row[itemCol].trim() : '';
     if (!key) continue;
-    data[key] = row.slice(2).map(parseNum);
+    data[key] = row.slice(dataStart).map(parseNum);
   }
 
   // Índice do mês mais recente com Faturamento preenchido
