@@ -504,7 +504,11 @@ function processarDados(rows) {
     data[key] = row.slice(dataStart).map(parseNum);
   }
 
-  console.log('[Dashboard] headerIdx:', headerIdx, '| itemCol:', itemCol, '| dataStart:', dataStart, '| Fat[0-2]:', (data['Faturamento']||[]).slice(0,3));
+  const _row = rows[headerIdx + 1] || [];
+  console.log('[Dashboard] row[itemCol]:', JSON.stringify(_row[itemCol]));
+  console.log('[Dashboard] row[dataStart]:', JSON.stringify(_row[dataStart]));
+  console.log('[Dashboard] parseNum direto:', parseNum(_row[dataStart]));
+  console.log('[Dashboard] Fat[0-2]:', (data['Faturamento']||[]).slice(0,3));
 
   // Índice do mês mais recente com Faturamento preenchido
   const fat = data['Faturamento'] || [];
