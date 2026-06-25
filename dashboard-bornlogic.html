@@ -407,8 +407,15 @@ function fmtK(v) {
   if (v === null || v === undefined) return '—';
   const abs = Math.abs(v);
   const sign = v < 0 ? '-' : '';
-  if (abs >= 1000) return sign + 'R$ ' + (abs/1000).toFixed(1) + 'M';
-  return sign + 'R$ ' + Math.round(abs) + 'k';
+  if (abs >= 1000) return sign + 'R$ ' + (abs/1000).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + 'M';
+  return sign + 'R$ ' + Math.round(abs).toLocaleString('pt-BR') + 'k';
+}
+
+function fmtAxis(v) {
+  const abs = Math.abs(v);
+  const sign = v < 0 ? '-' : '';
+  if (abs >= 1000) return sign + (abs/1000).toLocaleString('pt-BR', {maximumFractionDigits:1}) + 'M';
+  return sign + abs.toLocaleString('pt-BR') + 'k';
 }
 
 function fmtPct(v) {
@@ -497,9 +504,7 @@ function processarDados(rows) {
     data[key] = row.slice(dataStart).map(parseNum);
   }
 
-  // DEBUG — remover após confirmar dados
-  const fatDebug = (data['Faturamento'] || []).slice(0, 5);
-  document.getElementById('footer').textContent = 'DEBUG → Linhas: ' + rows.length + ' | headerIdx: ' + headerIdx + ' | itemCol: ' + itemCol + ' | Fat[0-4]: ' + JSON.stringify(fatDebug);
+  console.log('[Dashboard] headerIdx:', headerIdx, '| itemCol:', itemCol, '| dataStart:', dataStart, '| Fat[0-2]:', (data['Faturamento']||[]).slice(0,3));
 
   // Índice do mês mais recente com Faturamento preenchido
   const fat = data['Faturamento'] || [];
@@ -692,7 +697,7 @@ function renderCharts(sl, labels) {
         x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 9 } },
         y: {
           grid: { color: '#F1F5F9' },
-          ticks: { font: { size: 10 }, callback: v => 'R$' + v + 'k' },
+          ticks: { font: { size: 10 }, callback: v => 'R$ ' + fmtAxis(v) },
           stacked: false
         }
       }
@@ -781,7 +786,7 @@ function renderCharts(sl, labels) {
       },
       scales: {
         x:      { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 9 } },
-        yFolha: { position: 'left',  grid: { color: '#F1F5F9' }, ticks: { font: { size: 10 }, callback: v => 'R$' + v + 'k' } },
+        yFolha: { position: 'left',  grid: { color: '#F1F5F9' }, ticks: { font: { size: 10 }, callback: v => 'R$ ' + fmtAxis(v) } },
         yColab: { position: 'right', grid: { display: false }, ticks: { font: { size: 10 } } }
       }
     }
