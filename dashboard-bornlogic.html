@@ -483,6 +483,11 @@ function processarDados(rows) {
     data[key] = row.slice(dataStart).map(parseNum);
   }
 
+  // DEBUG — remover após confirmar dados
+  console.log('Linhas CSV:', rows.length, '| headerIdx:', headerIdx, '| itemCol:', itemCol, '| dataStart:', dataStart);
+  console.log('Chaves encontradas:', Object.keys(data));
+  console.log('Faturamento (primeiros 5):', (data['Faturamento'] || []).slice(0, 5));
+
   // Índice do mês mais recente com Faturamento preenchido
   const fat = data['Faturamento'] || [];
   let refIdx = fat.length - 1;
