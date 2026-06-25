@@ -385,8 +385,22 @@ function parseCSV(text) {
 }
 
 function parseNum(s) {
-  if (!s || /^[-–—\s]*$/.test(s)) return 0;
-  return parseFloat(s.replace(/\./g,'').replace(',','.')) || 0;
+  if (!s || /^[-–—\s]*$/.test(s.trim())) return 0;
+  s = s.trim();
+  // Remove R$, espaços e aspas
+  s = s.replace(/[R$\s"]/g, '');
+  // Formato brasileiro: 1.234,56 → tem vírgula como decimal
+  if (s.includes(',') && s.includes('.')) return parseFloat(s.replace(/\./g,'').replace(',','.')) || 0;
+  // Só ponto: pode ser decimal (1.5) ou milhar (1.234)
+  if (s.includes('.')) {
+    const partes = s.split('.');
+    // Se parte após ponto tem 3 dígitos → é separador de milhar
+    if (partes[partes.length - 1].length === 3) return parseFloat(s.replace(/\./g,'')) || 0;
+    return parseFloat(s) || 0;
+  }
+  // Só vírgula: separador decimal brasileiro (1,5)
+  if (s.includes(',')) return parseFloat(s.replace(',','.')) || 0;
+  return parseFloat(s) || 0;
 }
 
 function fmtK(v) {
@@ -484,9 +498,8 @@ function processarDados(rows) {
   }
 
   // DEBUG — remover após confirmar dados
-  console.log('Linhas CSV:', rows.length, '| headerIdx:', headerIdx, '| itemCol:', itemCol, '| dataStart:', dataStart);
-  console.log('Chaves encontradas:', Object.keys(data));
-  console.log('Faturamento (primeiros 5):', (data['Faturamento'] || []).slice(0, 5));
+  const fatDebug = (data['Faturamento'] || []).slice(0, 5);
+  document.getElementById('footer').textContent = 'DEBUG → Linhas: ' + rows.length + ' | headerIdx: ' + headerIdx + ' | itemCol: ' + itemCol + ' | Fat[0-4]: ' + JSON.stringify(fatDebug);
 
   // Índice do mês mais recente com Faturamento preenchido
   const fat = data['Faturamento'] || [];
