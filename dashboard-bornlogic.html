@@ -545,7 +545,7 @@ function renderKPIs(data, meses, idx) {
       value: fmtK(fatAtual),
       delta: fmtPct(dPct('Faturamento')),
       good:  dPct('Faturamento') === null ? null : dPct('Faturamento') >= 0,
-      sub:   meses[refIdx] || ''
+      sub:   meses[idx] || ''
     },
     {
       label: 'Clientes Ativos',
@@ -583,9 +583,6 @@ function renderKPIs(data, meses, idx) {
       sub:   'faturamento ÷ headcount'
     }
   ];
-
-  // Store refIdx para usar fora deste escopo
-  window.refIdx = idx;
 
   document.getElementById('kpi-grid').innerHTML = cards.map(c => {
     const cls = c.good === null ? 'flat' : c.good ? 'up' : 'down';
