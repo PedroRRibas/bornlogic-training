@@ -496,19 +496,16 @@ function processarDados(rows) {
   const dataStart  = itemCol + 2; // pula Item + Unidade
   const meses      = header.slice(dataStart);
 
+  // A planilha tem tabelas-resumo soltas mais abaixo (mesmas chaves "Item",
+  // só 1 mês de dado) usadas para outras fórmulas. Para na primeira linha
+  // em branco para não deixar essas tabelas sobrescreverem os dados reais.
   const data = {};
   for (let i = headerIdx + 1; i < rows.length; i++) {
     const row = rows[i];
     const key = row[itemCol] ? row[itemCol].trim() : '';
-    if (!key) continue;
+    if (!key) break;
     data[key] = row.slice(dataStart).map(parseNum);
   }
-
-  const _row = rows[headerIdx + 1] || [];
-  console.log('[Dashboard] row[itemCol]:', JSON.stringify(_row[itemCol]));
-  console.log('[Dashboard] row[dataStart]:', JSON.stringify(_row[dataStart]));
-  console.log('[Dashboard] parseNum direto:', parseNum(_row[dataStart]));
-  console.log('[Dashboard] Fat[0-2]:', (data['Faturamento']||[]).slice(0,3));
 
   // Índice do mês mais recente com Faturamento preenchido
   const fat = data['Faturamento'] || [];
