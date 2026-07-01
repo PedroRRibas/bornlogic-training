@@ -1058,6 +1058,24 @@ function renderProjecao({ labels, faturamento, novoMRR, upsell, downgrade, churn
         ctx.textAlign = 'center';
         ctx.fillText('HOJE', cx, Math.max(ca.top + 12, barY));
       }
+      // Valor dentro (ou acima) de cada barra
+      const fatMeta = chart.getDatasetMeta(0);
+      const fatData = chart.data.datasets[0].data;
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      fatMeta.data.forEach((bar, i) => {
+        const v = fatData[i]; if (!v) return;
+        const barH    = ca.bottom - bar.y;
+        const isLight = i >= firstProjIdx && i !== mesAtualIdx;
+        ctx.font      = 'bold 9px system-ui,sans-serif';
+        if (barH >= 20) {
+          ctx.fillStyle = isLight ? '#1E3A8A' : 'rgba(255,255,255,0.92)';
+          ctx.fillText(fmtK(v), bar.x, bar.y + 10);
+        } else {
+          ctx.fillStyle = '#334155';
+          ctx.fillText(fmtK(v), bar.x, bar.y - 8);
+        }
+      });
       ctx.restore();
     }
   };
@@ -1100,8 +1118,37 @@ function renderProjecao({ labels, faturamento, novoMRR, upsell, downgrade, churn
   // Gráfico 2 — Movimentos (apenas meses projetados)
   const proj = (arr) => arr.map((v, i) => i >= firstProjIdx ? v : null);
 
+  // Plugin: totais +/- acima/abaixo de cada coluna empilhada
+  const movPlugin = {
+    id: 'movLabels',
+    afterDraw(chart) {
+      const { ctx, chartArea: ca, scales: { x, y } } = chart;
+      ctx.save();
+      ctx.font      = 'bold 9px system-ui,sans-serif';
+      ctx.textAlign = 'center';
+      labels.forEach((_, i) => {
+        if (i < firstProjIdx) return;
+        const pos = (novoMRR[i]  || 0) + (upsell[i]    || 0);
+        const neg = (downgrade[i] || 0) + (churn[i]     || 0);
+        const cx  = x.getPixelForValue(i);
+        if (pos > 0) {
+          ctx.fillStyle    = '#065f46';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText('+' + fmtK(pos), cx, y.getPixelForValue(pos) - 3);
+        }
+        if (neg < 0) {
+          ctx.fillStyle    = '#7f1d1d';
+          ctx.textBaseline = 'top';
+          ctx.fillText('−' + fmtK(Math.abs(neg)), cx, y.getPixelForValue(neg) + 3);
+        }
+      });
+      ctx.restore();
+    }
+  };
+
   mkChart('c-proj-mov', {
     type: 'bar',
+    plugins: [movPlugin],
     data: {
       labels,
       datasets: [
