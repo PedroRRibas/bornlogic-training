@@ -285,6 +285,31 @@
 
     .chart-wrap { position: relative; height: 232px; }
 
+    .chart-card--full { grid-column: 1 / -1; }
+
+    .proj-legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .proj-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .proj-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
     /* ── FOOTER ──────────────────────────── */
     footer {
       text-align: center;
@@ -349,6 +374,50 @@
         <h3>Folha Salarial vs Colaboradores</h3>
         <div class="chart-wrap"><canvas id="c-team"></canvas></div>
       </div>
+
+      <!-- ── PROJEÇÃO ─────────────────────────────── -->
+      <div class="chart-card chart-card--full" id="proj-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+          <div>
+            <h3 style="margin-bottom:3px">Projeção de Faturamento &nbsp;<span style="font-weight:400;color:#94A3B8">(R$ mil)</span></h3>
+            <div id="proj-period" style="font-size:11px;color:var(--muted)">—</div>
+          </div>
+          <div class="proj-legend" id="proj-legend" style="display:none">
+            <div class="proj-legend-item">
+              <span class="proj-swatch" style="background:#1E40AF"></span>Realizado
+            </div>
+            <div class="proj-legend-item">
+              <span class="proj-swatch" style="background:#2563EB;outline:2px solid #F59E0B;outline-offset:1px"></span>Mês atual
+            </div>
+            <div class="proj-legend-item">
+              <span class="proj-swatch" style="background:rgba(147,197,253,0.8);border:1.5px dashed #2563EB"></span>Projetado
+            </div>
+          </div>
+        </div>
+
+        <!-- Placeholder quando PROJ_URL não está configurada -->
+        <div id="proj-placeholder" style="display:flex;align-items:center;justify-content:center;height:200px;background:#F8FAFC;border-radius:8px;border:1.5px dashed var(--border);color:var(--muted);text-align:center;padding:24px">
+          <div>
+            <div style="font-size:28px;margin-bottom:10px">📊</div>
+            <div style="font-weight:700;font-size:13px;color:var(--text);margin-bottom:6px">Aba "Projeção" não conectada</div>
+            <div style="font-size:12px;line-height:1.6">
+              Publique a aba no Google Sheets e preencha<br>
+              <code style="background:#E2E8F0;padding:1px 6px;border-radius:4px;font-size:11px">PROJ_URL</code>
+              no código para ativar este gráfico
+            </div>
+          </div>
+        </div>
+
+        <!-- Conteúdo real (oculto até PROJ_URL ser preenchida) -->
+        <div id="proj-charts" style="display:none">
+          <div style="position:relative;height:200px"><canvas id="c-proj-fat"></canvas></div>
+          <div style="border-top:1px solid var(--border);margin:18px 0 12px"></div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:10px">
+            Movimentação por mês projetado
+          </div>
+          <div style="position:relative;height:140px"><canvas id="c-proj-mov"></canvas></div>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -358,6 +427,7 @@
 <script>
 const SENHA_HASH = '32d79857b9f147b0a7e7c919675b4dab29c5d89d7c4d0fe2f05673b4bcbf7e68';
 const SHEET_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTd0xQKharcAOkWu6Y7fMOBOLiM2o8Soqmehfa33CP41Fogi3MREW99brunju8e-w9ch75kYizT7phQ/pub?gid=0&single=true&output=csv';
+const PROJ_URL   = ''; // ← preencher com gid da aba Projeção após publicar (ex: &gid=1234567890)
 const REFRESH_S  = 60;
 
 let periodo  = 12;
@@ -450,6 +520,7 @@ function mostrarApp() {
   document.getElementById('login').style.display = 'none';
   document.getElementById('app').style.display   = 'block';
   carregarDados();
+  carregarProjecao();
   setInterval(carregarDados, REFRESH_S * 1000);
 }
 
@@ -808,6 +879,234 @@ function setLoading(on) {
   const txt = document.getElementById('live-status');
   dot.className = 'live-dot' + (on ? ' pulsing' : '');
   txt.textContent = on ? 'Atualizando…' : 'Ao vivo · ' + REFRESH_S + 's';
+}
+
+// ── Projeção ──────────────────────────────────────────────────
+
+async function carregarProjecao() {
+  if (!PROJ_URL) return;
+  try {
+    const res  = await fetch(PROJ_URL + '&_=' + Date.now());
+    const text = await res.text();
+    processarProjecao(parseCSV(text));
+  } catch (e) {
+    console.warn('[Projeção] Erro ao carregar:', e.message);
+  }
+}
+
+function parseMesLabel(label) {
+  const MM = {jan:0,fev:1,mar:2,abr:3,mai:4,jun:5,jul:6,ago:7,set:8,out:9,nov:10,dez:11};
+  const m  = (label || '').match(/([a-záã]{3})\.?[./]?(\d{2,4})/i);
+  if (!m) return null;
+  const mo = MM[m[1].toLowerCase().substring(0, 3)];
+  const yr = parseInt(m[2]) + (m[2].length === 2 ? 2000 : 0);
+  return (mo !== undefined && !isNaN(yr)) ? new Date(yr, mo, 1) : null;
+}
+
+function processarProjecao(rows) {
+  if (!rows || rows.length < 5) return;
+
+  // Localiza a linha de cabeçalho com pelo menos 2 colunas de mês (ex: "jul./26")
+  let headerIdx = -1, monthStartCol = -1;
+  for (let i = 0; i < Math.min(rows.length, 30); i++) {
+    const mIdx = rows[i].findIndex(c => parseMesLabel(c) !== null);
+    if (mIdx >= 0 && rows[i].filter(c => parseMesLabel(c) !== null).length >= 2) {
+      headerIdx = i; monthStartCol = mIdx; break;
+    }
+  }
+  if (headerIdx < 0) return;
+
+  const header  = rows[headerIdx];
+  const keyCol  = Math.max(0, monthStartCol - 1);
+  const meses   = header.slice(monthStartCol).map(c => c.trim()).filter(c => c);
+  const mCount  = meses.length;
+
+  // Índice do mês atual e do primeiro mês projetado
+  const now = new Date();
+  let mesAtualFullIdx = meses.findIndex(m => {
+    const d = parseMesLabel(m);
+    return d && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+  if (mesAtualFullIdx < 0) {
+    mesAtualFullIdx = meses.findIndex(m => { const d = parseMesLabel(m); return d && d >= now; });
+  }
+  const firstProj = mesAtualFullIdx >= 0 ? mesAtualFullIdx : mCount;
+
+  // Lê as linhas de dados até a primeira chave vazia (igual ao parser da aba base)
+  const clientRows = [];
+  let fatRow = null;
+
+  for (let i = headerIdx + 1; i < rows.length; i++) {
+    const row = rows[i];
+    const key = (row[keyCol] || '').trim();
+    if (!key) break;
+    const vals = meses.map((_, ci) => parseNum(row[monthStartCol + ci] || ''));
+    if (key.toLowerCase().includes('faturamento')) {
+      fatRow = vals;
+    } else if (vals.some(v => v > 0)) {
+      clientRows.push(vals);
+    }
+  }
+  if (!fatRow) return;
+
+  // Calcula movimentos mês a mês para os meses projetados
+  const novoMRR = new Array(mCount).fill(0);
+  const upsell  = new Array(mCount).fill(0);
+  const downgr  = new Array(mCount).fill(0);
+  const churn   = new Array(mCount).fill(0);
+
+  for (let mi = Math.max(1, firstProj); mi < mCount; mi++) {
+    for (const cr of clientRows) {
+      const prev = cr[mi - 1] || 0;
+      const cur  = cr[mi]     || 0;
+      if      (prev === 0 && cur  > 0)                  novoMRR[mi] += cur;
+      else if (prev  > 0 && cur  > prev)                upsell[mi]  += (cur - prev);
+      else if (prev  > 0 && cur  > 0 && cur < prev)     downgr[mi]  += (cur - prev); // negativo
+      else if (prev  > 0 && cur === 0)                  churn[mi]   -= prev;          // negativo
+    }
+  }
+
+  // Janela de exibição: 3 meses realizados + mês atual + 3 meses futuros
+  const BEFORE = 3, AFTER = 3;
+  const wStart = Math.max(0, firstProj - BEFORE);
+  const wEnd   = Math.min(mCount, firstProj + AFTER + 1);
+  const sl     = arr => arr.slice(wStart, wEnd);
+
+  renderProjecao({
+    labels:       sl(meses),
+    faturamento:  sl(fatRow),
+    novoMRR:      sl(novoMRR),
+    upsell:       sl(upsell),
+    downgrade:    sl(downgr),
+    churn:        sl(churn),
+    mesAtualIdx:  mesAtualFullIdx - wStart,
+    firstProjIdx: Math.max(0, firstProj - wStart)
+  });
+}
+
+function renderProjecao({ labels, faturamento, novoMRR, upsell, downgrade, churn, mesAtualIdx, firstProjIdx }) {
+  document.getElementById('proj-placeholder').style.display = 'none';
+  document.getElementById('proj-charts').style.display      = 'block';
+  document.getElementById('proj-legend').style.display      = 'flex';
+  document.getElementById('proj-period').textContent =
+    (labels[0] || '') + ' → ' + (labels[labels.length - 1] || '');
+
+  // Cores das barras: realizado = azul escuro, mês atual = azul médio, projetado = azul claro
+  const bgFat  = labels.map((_, i) =>
+    i === mesAtualIdx  ? '#2563EB' :
+    i < firstProjIdx   ? '#1E40AF' :
+    'rgba(147,197,253,0.75)');
+  const bdrFat = labels.map((_, i) => i === mesAtualIdx ? '#F59E0B' : 'transparent');
+  const bdrW   = labels.map((_, i) => i === mesAtualIdx ? 3 : 0);
+
+  // Plugin: linha separadora Realizado/Projetado + rótulo "HOJE"
+  const projPlugin = {
+    id: 'projAnnot',
+    afterDraw(chart) {
+      const { ctx, chartArea: ca, scales: { x, y } } = chart;
+      ctx.save();
+      if (firstProjIdx > 0) {
+        const sepX = (x.getPixelForValue(firstProjIdx - 1) + x.getPixelForValue(firstProjIdx)) / 2;
+        ctx.strokeStyle = '#94A3B8';
+        ctx.lineWidth   = 1;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(sepX, ca.top); ctx.lineTo(sepX, ca.bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.font      = '9px system-ui,sans-serif';
+        ctx.fillStyle = '#94A3B8';
+        ctx.textAlign = 'right';
+        ctx.fillText('REALIZADO', sepX - 5, ca.top + 11);
+        ctx.textAlign = 'left';
+        ctx.fillText('PROJETADO', sepX + 5, ca.top + 11);
+      }
+      // "HOJE" acima da barra do mês atual
+      if (mesAtualIdx >= 0 && mesAtualIdx < labels.length) {
+        const cx   = x.getPixelForValue(mesAtualIdx);
+        const barY = faturamento[mesAtualIdx]
+          ? y.getPixelForValue(faturamento[mesAtualIdx]) - 7
+          : ca.top + 16;
+        ctx.font      = 'bold 9px system-ui,sans-serif';
+        ctx.fillStyle = '#F59E0B';
+        ctx.textAlign = 'center';
+        ctx.fillText('HOJE', cx, Math.max(ca.top + 12, barY));
+      }
+      ctx.restore();
+    }
+  };
+
+  // Gráfico 1 — Faturamento
+  mkChart('c-proj-fat', {
+    type: 'bar',
+    plugins: [projPlugin],
+    data: {
+      labels,
+      datasets: [{
+        label: 'Faturamento',
+        data: faturamento,
+        backgroundColor: bgFat,
+        borderColor: bdrFat,
+        borderWidth: bdrW,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          bodyFont: { size: 11 }, titleFont: { size: 11 },
+          callbacks: {
+            title: ([item]) => item.label + (item.dataIndex >= firstProjIdx ? ' · Projetado' : ' · Realizado'),
+            label: item  => 'Faturamento: ' + fmtK(item.raw)
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 9 } },
+        y: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 10 }, callback: v => 'R$ ' + fmtAxis(v) } }
+      }
+    }
+  });
+
+  // Gráfico 2 — Movimentos (apenas meses projetados)
+  const proj = (arr) => arr.map((v, i) => i >= firstProjIdx ? v : null);
+
+  mkChart('c-proj-mov', {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Novo MRR',        data: proj(novoMRR),   backgroundColor: '#16A34A', borderRadius: 3, stack: 's' },
+        { label: 'Upsell/Crossell', data: proj(upsell),    backgroundColor: '#0EA5E9', borderRadius: 3, stack: 's' },
+        { label: 'Downgrade',       data: proj(downgrade), backgroundColor: '#D97706', borderRadius: 3, stack: 's' },
+        { label: 'Churn',           data: proj(churn),     backgroundColor: '#DC2626', borderRadius: 3, stack: 's' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 }, padding: 10 } },
+        tooltip: {
+          bodyFont: { size: 10 }, titleFont: { size: 10 },
+          callbacks: {
+            label: item => {
+              if (item.raw === null) return null;
+              return item.dataset.label + ': ' + fmtK(Math.abs(item.raw)) +
+                     (item.raw < 0 ? ' (saída)' : ' (entrada)');
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } }, stacked: true },
+        y: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 10 }, callback: v => fmtAxis(v) }, stacked: true }
+      }
+    }
+  });
 }
 
 // ── Boot ──────────────────────────────────────────────────────
